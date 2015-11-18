@@ -34,20 +34,35 @@ public abstract class ImagePagerAdapterBase extends PagerAdapter {
     public abstract PhotoView getItem(int position);
 
     @Override
-    public Object instantiateItem(ViewGroup container, int position) {
-        if (mImageViews.size() > position) {
-            ImageView v = mImageViews.get(position);
-            if (v != null) {
-                return v;
-            }
-        }
+    public abstract int getCount();
 
+    @Override
+    public boolean isViewFromObject(View view, Object object) {
+        return view == object;
+    }
+
+    @Override
+    public Object instantiateItem(ViewGroup container, int position) {
+//        if (mImageViews.size() > position) {
+//            PhotoView v = mImageViews.get(position);
+//            if (v != null) {
+//                container.addView(v, ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+//                return v;
+//            }
+//        }
+//
+//        PhotoView imageView = getItem(position);
+//        while (mImageViews.size() <= position) {
+//            mImageViews.add(null);
+//        }
+//        imageView.setVisibility(View.VISIBLE);
+//        mImageViews.set(position, imageView);
+//
+//        container.addView(imageView, ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+//
+//        return imageView;
         PhotoView imageView = getItem(position);
-        while (mImageViews.size() <= position) {
-            mImageViews.add(null);
-        }
-        imageView.setVisibility(View.VISIBLE);
-        mImageViews.set(position, imageView);
+
         container.addView(imageView, ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
 
         return imageView;
@@ -55,11 +70,11 @@ public abstract class ImagePagerAdapterBase extends PagerAdapter {
 
     @Override
     public void destroyItem(ViewGroup container, int position, Object object) {
-        PhotoView imageView = (PhotoView) object;
-        if (imageView != null) {
-            mImageViews.remove(imageView);
-        }
-        //container.removeView((View) object);
+//        PhotoView imageView = (PhotoView) object;
+//        if (imageView != null) {
+//            mImageViews.remove(imageView);
+//        }
+        container.removeView((View) object);
     }
 
 //    @Override
@@ -81,15 +96,12 @@ public abstract class ImagePagerAdapterBase extends PagerAdapter {
     @Override
     public int getItemPosition(Object object) {
         PhotoView imageView = (PhotoView) object;
-        return mImageViews.indexOf(imageView);
-    }
-
-    @Override
-    public abstract int getCount();
-
-    @Override
-    public boolean isViewFromObject(View view, Object object) {
-        return view == object;
+        int positon = mImageViews.indexOf(imageView);
+        if (positon == -1) {
+            return POSITION_NONE;
+        } else {
+            return positon;
+        }
     }
 
     @Override

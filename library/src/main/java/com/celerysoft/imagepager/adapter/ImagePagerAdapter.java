@@ -1,6 +1,8 @@
 package com.celerysoft.imagepager.adapter;
 
-import java.util.ArrayList;
+import android.content.Context;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 
 import uk.co.senab.photoview.PhotoView;
 
@@ -9,24 +11,42 @@ import uk.co.senab.photoview.PhotoView;
  */
 public class ImagePagerAdapter extends ImagePagerAdapterBase {
 
-    ArrayList<PhotoView> mPhotoViews;
-    public void setImageViews(ArrayList<PhotoView> ImageViews) {
-        mPhotoViews = ImageViews;
+    private Context mContext;
+
+    private int[] mImageResIds;
+    public void setImageResIds(int[] imageResIds) {
+        mImageResIds = imageResIds;
+        mImagePaths = null;
+    }
+
+    private String[] mImagePaths;
+    public void setImagePaths(String[] imagePaths) {
+        mImageResIds = null;
+        mImagePaths = imagePaths;
+    }
+
+
+    public ImagePagerAdapter(Context context) {
+        mContext = context;
     }
 
     @Override
     public PhotoView getItem(int position) {
-        PhotoView photoView = null;
-        if (mPhotoViews != null && mPhotoViews.size() > position) {
-            photoView = mPhotoViews.get(position);
+        PhotoView photoView = new PhotoView(mContext);
+        if (mImageResIds != null && mImageResIds.length > position) {
+            photoView.setImageResource(mImageResIds[position]);
+        } else if (mImagePaths != null && mImagePaths.length > position) {
+
         }
         return photoView;
     }
 
     @Override
     public int getCount() {
-        if (mPhotoViews != null) {
-            return mPhotoViews.size();
+        if (mImageResIds != null) {
+            return mImageResIds.length;
+        } else if (mImagePaths != null) {
+            return mImagePaths.length;
         }
         return 0;
     }
