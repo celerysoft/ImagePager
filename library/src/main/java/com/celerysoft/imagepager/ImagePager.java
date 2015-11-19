@@ -1,15 +1,17 @@
 package com.celerysoft.imagepager;
 
 import android.content.Context;
+import android.support.v4.view.ViewPager;
 import android.util.AttributeSet;
 import android.util.Log;
-import android.util.TypedValue;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.celerysoft.imagepager.adapter.ImagePagerAdapter;
 import com.celerysoft.imagepager.view.ActionBar;
-import com.celerysoft.imagepager.view.Indicators;
 import com.celerysoft.imagepager.view.Pager;
+import com.celerysoft.imagepager.view.indicator.Indicator;
+import com.celerysoft.imagepager.view.indicator.TextIndicator;
 
 /**
  * ImagePager, display images, contain a actionbar, a indicator and a pager.
@@ -22,7 +24,28 @@ public class ImagePager extends ViewGroup {
 
     // field
     private Context mContext;
+    private Pager mPager;
+    private Indicator mIndicator;
+    private ActionBar mActionBar;
 
+    // propertry
+    private ImagePagerAdapter mAdapter;
+    public ImagePagerAdapter getAdapter() {
+        return mAdapter;
+    }
+    public void setAdapter(ImagePagerAdapter adapter) {
+        mAdapter = adapter;
+        mPager.setAdapter(adapter);
+        mIndicator.setImageCount(adapter.getCount());
+    }
+
+    private OnImageChangeListener mImageChangeListener;
+    public OnImageChangeListener getImageChangeListener() {
+        return mImageChangeListener;
+    }
+    public void setImageChangeListener(OnImageChangeListener imageChangeListener) {
+        mImageChangeListener = imageChangeListener;
+    }
 
     public ImagePager(Context context) {
         super(context);
@@ -36,7 +59,51 @@ public class ImagePager extends ViewGroup {
 
     private void initImagePager() {
         mContext = getContext();
+
+        try {
+            setBackgroundColor(getResources().getColor(R.color.image_pager_background, null));
+        } catch (NoSuchMethodError e) {
+            setBackgroundColor(getResources().getColor(R.color.image_pager_background));
+        }
+
+        mPager = new Pager(mContext);
+        addView(mPager, new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT));
+        mIndicator = new TextIndicator(mContext);
+        addView((View)mIndicator, new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT));
+        mActionBar = new ActionBar(mContext);
+        addView(mActionBar, new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT));
+
+        mPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+                if (mImageChangeListener != null) {
+                    mImageChangeListener.onPageScrolled(position, positionOffset, positionOffsetPixels);
+                }
+            }
+            @Override
+            public void onPageSelected(int position) {
+                if (mImageChangeListener != null) {
+                    mImageChangeListener.onPageSelected(position);
+                }
+                mIndicator.onPageSelected(position);
+            }
+            @Override
+            public void onPageScrollStateChanged(int state) {
+                if (mImageChangeListener != null) {
+                    mImageChangeListener.onPageScrollStateChanged(state);
+                }
+            }
+        });
+
+        setClickable(true);
+        setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                toggleActionBarVisibility();
+            }
+        });
     }
+
 
     @Override
     public LayoutParams generateLayoutParams(AttributeSet attrs) {
@@ -92,31 +159,52 @@ public class ImagePager extends ViewGroup {
         for (int i = 0; i < childCount; ++i) {
             View childView = getChildAt(i);
 
-            int left = 0;
-            int top = 0;
-            int right = 0;
-            int bottom = 0;
+            int left = l;
+            int top = t;
+            int right = r;
+            int bottom = b;
 
             if (childView instanceof ActionBar) {
                 // do nothing
-            } else if (childView instanceof Indicators) {
+            } else if (childView instanceof Indicator) {
                 int horizontalMargin = (getMeasuredWidth() - childView.getMeasuredWidth()) / 2;
-                left = horizontalMargin;
-                right = horizontalMargin;
-                bottom = dp2px(16);
+                left += horizontalMargin;
+                right -= horizontalMargin;
+                top = getMeasuredHeight() - (int) (getMeasuredHeight() * 0.1);
+                bottom = top + childView.getMeasuredHeight();
             } else if (childView instanceof Pager) {
                 // do nothing
             } else {
                 Log.e(TAG, "wtfffff!");
+                childView.layout(l, t, r, b);
+                continue;
             }
 
             childView.layout(left, top, right, bottom);
         }
     }
 
-    private int dp2px(float dpVal)
-    {
-        return (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,
-                dpVal, mContext.getResources().getDisplayMetrics());
+    private void toggleActionBarVisibility() {
+        if (mActionBar.getVisibility() == INVISIBLE) {
+            showActionBar();
+        } else {
+            hideActionBar();
+        }
+    }
+
+    private void showActionBar() {
+        mActionBar.setVisibility(VISIBLE);
+        Log.d(TAG, "show actionbar");
+    }
+
+    private void hideActionBar() {
+        mActionBar.setVisibility(INVISIBLE);
+        Log.d(TAG, "hide actionbar");
+    }
+
+    public interface OnImageChangeListener {
+        void onPageScrolled(int position, float positionOffset, int positionOffsetPixels);
+        void onPageSelected(int position);
+        void onPageScrollStateChanged(int state);
     }
 }

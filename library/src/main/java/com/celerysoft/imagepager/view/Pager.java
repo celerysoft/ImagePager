@@ -2,7 +2,6 @@ package com.celerysoft.imagepager.view;
 
 import android.content.Context;
 import android.support.v4.view.ViewPager;
-import android.util.AttributeSet;
 import android.view.MotionEvent;
 
 /**
@@ -12,10 +11,10 @@ public class Pager extends ViewPager {
 
     public Pager(Context context) {
         super(context);
-        init();
+        initPager();
     }
 
-    private void init() {
+    private void initPager() {
         this.setOffscreenPageLimit(10);
     }
 
@@ -33,4 +32,6 @@ public class Pager extends ViewPager {
     public boolean onTouchEvent(MotionEvent event) {
         return super.onTouchEvent(event);
     }
+
+
 }
