@@ -5,7 +5,7 @@
               android:layout_height="match_parent"
     android:background="#DF000000">
 
-    <com.celerysoft.imagepager.ImagePager
+    <com.celerysoft.imagepager.view.Pager
         android:id="@+id/main_image_pager"
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>
