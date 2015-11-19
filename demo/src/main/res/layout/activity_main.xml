@@ -3,9 +3,9 @@
               android:orientation="vertical"
               android:layout_width="match_parent"
               android:layout_height="match_parent"
-    android:background="#DF000000">
+    android:background="#DFdddddd">
 
-    <com.celerysoft.imagepager.view.Pager
+    <com.celerysoft.imagepager.ImagePager
         android:id="@+id/main_image_pager"
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>

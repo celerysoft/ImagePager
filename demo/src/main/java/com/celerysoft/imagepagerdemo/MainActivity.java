@@ -3,6 +3,7 @@ package com.celerysoft.imagepagerdemo;
 import android.app.Activity;
 import android.os.Bundle;
 
+import com.celerysoft.imagepager.ImagePager;
 import com.celerysoft.imagepager.view.Pager;
 import com.celerysoft.imagepager.adapter.ImagePagerAdapter;
 
@@ -10,7 +11,7 @@ import com.celerysoft.imagepager.adapter.ImagePagerAdapter;
  * Created by Administrator on 2015-11-18.
  */
 public class MainActivity extends Activity {
-    private Pager mPager;
+    private ImagePager mImagePager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -18,7 +19,7 @@ public class MainActivity extends Activity {
 
         setContentView(R.layout.activity_main);
 
-        mPager = (Pager) findViewById(R.id.main_image_pager);
+        mImagePager = (ImagePager) findViewById(R.id.main_image_pager);
 
         ImagePagerAdapter adapter = new ImagePagerAdapter(this);
         int[] imageResIds = new int[3];
@@ -27,6 +28,6 @@ public class MainActivity extends Activity {
         imageResIds[2] = R.drawable._00003;
         adapter.setImageResIds(imageResIds);
 
-        mPager.setAdapter(adapter);
+        mImagePager.setAdapter(adapter);
     }
 }
