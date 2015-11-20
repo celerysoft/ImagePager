@@ -18,7 +18,7 @@ public class TextIndicator extends TextView implements Indicator {
     public TextIndicator(Context context) {
         super(context);
         setGravity(Gravity.CENTER);
-        setTextSize(DensityUtil.sp2px(context, 20));
+        setTextSize(DensityUtil.sp2px(context, 16));
 
         setBackgroundResource(R.drawable.textindicator_background);
         try {

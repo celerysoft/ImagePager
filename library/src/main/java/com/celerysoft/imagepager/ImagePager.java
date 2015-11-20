@@ -35,17 +35,38 @@ public class ImagePager extends ViewGroup {
     }
     public void setAdapter(ImagePagerAdapter adapter) {
         mAdapter = adapter;
+        ImagePagerAdapter imagePagerAdapter = (ImagePagerAdapter) adapter;
+        imagePagerAdapter.setOnPageClickListenerListener(new OnImageClickListener() {
+            @Override
+            public void onImageClick() {
+                toggleActionBarVisibility();
+            }
+        });
+        if (mOnImageClickListener != null) {
+            imagePagerAdapter.setOnImageClickListener(mOnImageClickListener);
+        }
         mPager.setAdapter(adapter);
         mIndicator.setImageCount(adapter.getCount());
     }
 
-    private OnImageChangeListener mImageChangeListener;
-    public OnImageChangeListener getImageChangeListener() {
-        return mImageChangeListener;
+    private OnImageChangeListener mOnImageChangeListener;
+    public OnImageChangeListener getOnImageChangeListener() {
+        return mOnImageChangeListener;
     }
-    public void setImageChangeListener(OnImageChangeListener imageChangeListener) {
-        mImageChangeListener = imageChangeListener;
+    public void setOnImageChangeListener(OnImageChangeListener onImageChangeListener) {
+        mOnImageChangeListener = onImageChangeListener;
     }
+
+    private OnImageClickListener mOnImageClickListener;
+    public OnImageClickListener getOnImageClickListener() {
+        return mOnImageClickListener;
+    }
+    public void setOnImageClickListener(OnImageClickListener onImageClickListener) {
+        mOnImageClickListener = onImageClickListener;
+    }
+
+
+
 
     public ImagePager(Context context) {
         super(context);
@@ -72,38 +93,31 @@ public class ImagePager extends ViewGroup {
         addView((View)mIndicator, new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT));
         mActionBar = new ActionBar(mContext);
         addView(mActionBar, new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT));
+        hideActionBar();
+
 
         mPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-                if (mImageChangeListener != null) {
-                    mImageChangeListener.onPageScrolled(position, positionOffset, positionOffsetPixels);
+                if (mOnImageChangeListener != null) {
+                    mOnImageChangeListener.onPageScrolled(position, positionOffset, positionOffsetPixels);
                 }
             }
             @Override
             public void onPageSelected(int position) {
-                if (mImageChangeListener != null) {
-                    mImageChangeListener.onPageSelected(position);
+                if (mOnImageChangeListener != null) {
+                    mOnImageChangeListener.onPageSelected(position);
                 }
                 mIndicator.onPageSelected(position);
             }
             @Override
             public void onPageScrollStateChanged(int state) {
-                if (mImageChangeListener != null) {
-                    mImageChangeListener.onPageScrollStateChanged(state);
+                if (mOnImageChangeListener != null) {
+                    mOnImageChangeListener.onPageScrollStateChanged(state);
                 }
             }
         });
-
-        setClickable(true);
-        setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                toggleActionBarVisibility();
-            }
-        });
     }
-
 
     @Override
     public LayoutParams generateLayoutParams(AttributeSet attrs) {
@@ -170,7 +184,7 @@ public class ImagePager extends ViewGroup {
                 int horizontalMargin = (getMeasuredWidth() - childView.getMeasuredWidth()) / 2;
                 left += horizontalMargin;
                 right -= horizontalMargin;
-                top = getMeasuredHeight() - (int) (getMeasuredHeight() * 0.1);
+                top = getMeasuredHeight() - (int) (childView.getMeasuredHeight() * 2.5);
                 bottom = top + childView.getMeasuredHeight();
             } else if (childView instanceof Pager) {
                 // do nothing
@@ -206,5 +220,9 @@ public class ImagePager extends ViewGroup {
         void onPageScrolled(int position, float positionOffset, int positionOffsetPixels);
         void onPageSelected(int position);
         void onPageScrollStateChanged(int state);
+    }
+
+    public interface OnImageClickListener {
+        void onImageClick();
     }
 }

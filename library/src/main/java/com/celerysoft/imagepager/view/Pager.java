@@ -1,13 +1,19 @@
 package com.celerysoft.imagepager.view;
 
 import android.content.Context;
+import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.util.Log;
 import android.view.MotionEvent;
+
+import com.celerysoft.imagepager.adapter.ImagePagerAdapter;
 
 /**
  * Created by Administrator on 2015-11-18.
  */
 public class Pager extends ViewPager {
+
+    private final String TAG = this.getClass().getSimpleName();
 
     public Pager(Context context) {
         super(context);
@@ -27,11 +33,4 @@ public class Pager extends ViewPager {
             return false;
         }
     }
-
-    @Override
-    public boolean onTouchEvent(MotionEvent event) {
-        return super.onTouchEvent(event);
-    }
-
-
 }
