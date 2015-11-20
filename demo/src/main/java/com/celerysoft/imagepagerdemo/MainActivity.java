@@ -2,6 +2,8 @@ package com.celerysoft.imagepagerdemo;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.view.View;
+import android.view.ViewGroup;
 
 import com.celerysoft.imagepager.ImagePager;
 import com.celerysoft.imagepager.adapter.SimpleImagePagerAdapter;
@@ -11,6 +13,7 @@ import com.celerysoft.imagepager.adapter.SimpleImagePagerAdapter;
  */
 public class MainActivity extends Activity {
     private ImagePager mImagePager;
+    private View mActionBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -18,7 +21,15 @@ public class MainActivity extends Activity {
 
         setContentView(R.layout.activity_main);
 
+        mActionBar = findViewById(R.id.mian_action_bar);
         mImagePager = (ImagePager) findViewById(R.id.main_image_pager);
+
+        mImagePager.setOnPageClickListener(new ImagePager.OnPageClickListener() {
+            @Override
+            public void onPageClick() {
+                toggleActionBarVisibility();
+            }
+        });
 
         SimpleImagePagerAdapter adapter = new SimpleImagePagerAdapter(this);
         int[] imageResIds = new int[3];
@@ -28,5 +39,13 @@ public class MainActivity extends Activity {
         adapter.setImageResIds(imageResIds);
 
         mImagePager.setAdapter(adapter);
+    }
+
+    private void toggleActionBarVisibility() {
+        if (mActionBar.getVisibility() == View.INVISIBLE) {
+            mActionBar.setVisibility(View.VISIBLE);
+        } else {
+            mActionBar.setVisibility(View.INVISIBLE);
+        }
     }
 }

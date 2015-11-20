@@ -1,13 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:orientation="vertical"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
               android:layout_width="match_parent"
-              android:layout_height="match_parent"
-    android:background="#DFdddddd">
+              android:layout_height="match_parent">
 
     <com.celerysoft.imagepager.ImagePager
         android:id="@+id/main_image_pager"
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>
 
-</LinearLayout>
+    <TextView
+        android:id="@+id/mian_action_bar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:visibility="invisible"
+        android:text="Show the action bar"
+        android:textSize="20sp"
+        android:gravity="center"
+        android:background="#DEFFFFFF"
+        android:textColor="#DE000000"/>
+
+</RelativeLayout>
