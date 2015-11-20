@@ -4,8 +4,7 @@ import android.app.Activity;
 import android.os.Bundle;
 
 import com.celerysoft.imagepager.ImagePager;
-import com.celerysoft.imagepager.view.Pager;
-import com.celerysoft.imagepager.adapter.ImagePagerAdapter;
+import com.celerysoft.imagepager.adapter.SimpleImagePagerAdapter;
 
 /**
  * Created by Administrator on 2015-11-18.
@@ -21,7 +20,7 @@ public class MainActivity extends Activity {
 
         mImagePager = (ImagePager) findViewById(R.id.main_image_pager);
 
-        ImagePagerAdapter adapter = new ImagePagerAdapter(this);
+        SimpleImagePagerAdapter adapter = new SimpleImagePagerAdapter(this);
         int[] imageResIds = new int[3];
         imageResIds[0] = R.drawable._00001;
         imageResIds[1] = R.drawable._00002;
