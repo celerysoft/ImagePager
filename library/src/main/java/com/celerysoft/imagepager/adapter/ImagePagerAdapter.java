@@ -34,9 +34,9 @@ public abstract class ImagePagerAdapter extends PagerAdapter {
         mOnPhotoTapListener = onImageClickListener;
     }
 
-    private ImagePager.OnImageClickListener mOnPageClickListener;
-    public void setOnPageClickListenerListener(ImagePager.OnImageClickListener onImageClickListener) {
-        mOnPageClickListener = onImageClickListener;
+    private ImagePager.OnPageClickListener mOnPageClickListener;
+    public void setOnPageClickListenerListener(ImagePager.OnPageClickListener onPageClickListener) {
+        mOnPageClickListener = onPageClickListener;
     }
 
     public ImagePagerAdapter() {
@@ -74,21 +74,24 @@ public abstract class ImagePagerAdapter extends PagerAdapter {
 //
 //        return imageView;
         PhotoView imageView = getItem(position);
-        imageView.setOnViewTapListener(new PhotoViewAttacher.OnViewTapListener() {
-            @Override
-            public void onViewTap(View view, float x, float y) {
-                mOnPageClickListener.onImageClick();
-            }
-        });
-        imageView.setOnPhotoTapListener(new PhotoViewAttacher.OnPhotoTapListener() {
-            @Override
-            public void onPhotoTap(View view, float x, float y) {
-                mOnPageClickListener.onImageClick();
-                if (mOnPhotoTapListener != null) {
+        if (mOnPageClickListener != null) {
+            imageView.setOnViewTapListener(new PhotoViewAttacher.OnViewTapListener() {
+                @Override
+                public void onViewTap(View view, float x, float y) {
+                    mOnPageClickListener.onPageClick();
+                }
+            });
+        }
+        if (mOnPhotoTapListener != null) {
+            imageView.setOnPhotoTapListener(new PhotoViewAttacher.OnPhotoTapListener() {
+                @Override
+                public void onPhotoTap(View view, float x, float y) {
                     mOnPhotoTapListener.onImageClick();
                 }
-            }
-        });
+            });
+        }
+
+
 
         container.addView(imageView, ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
 

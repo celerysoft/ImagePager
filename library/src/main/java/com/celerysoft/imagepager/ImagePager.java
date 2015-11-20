@@ -8,25 +8,23 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.celerysoft.imagepager.adapter.ImagePagerAdapter;
-import com.celerysoft.imagepager.view.ActionBar;
 import com.celerysoft.imagepager.view.Pager;
 import com.celerysoft.imagepager.view.indicator.Indicator;
 import com.celerysoft.imagepager.view.indicator.TextIndicator;
 
 /**
- * ImagePager, display images, contain a actionbar, a indicator and a pager.
+ * ImagePager, display images, contain a indicator and a pager.
  * Created by Celery on 2015-11-19.
  */
 public class ImagePager extends ViewGroup {
     // const
     private final String TAG = this.getClass().getSimpleName();
-    private final int CHILD_COUNT = 3;
+    private final int CHILD_COUNT = 2;
 
     // field
     private Context mContext;
     private Pager mPager;
     private Indicator mIndicator;
-    private ActionBar mActionBar;
 
     // propertry
     private ImagePagerAdapter mAdapter;
@@ -36,12 +34,9 @@ public class ImagePager extends ViewGroup {
     public void setAdapter(ImagePagerAdapter adapter) {
         mAdapter = adapter;
         ImagePagerAdapter imagePagerAdapter = (ImagePagerAdapter) adapter;
-        imagePagerAdapter.setOnPageClickListenerListener(new OnImageClickListener() {
-            @Override
-            public void onImageClick() {
-                toggleActionBarVisibility();
-            }
-        });
+        if (mOnPageClickListener != null) {
+            imagePagerAdapter.setOnPageClickListenerListener(mOnPageClickListener);
+        }
         if (mOnImageClickListener != null) {
             imagePagerAdapter.setOnImageClickListener(mOnImageClickListener);
         }
@@ -63,7 +58,22 @@ public class ImagePager extends ViewGroup {
     }
     public void setOnImageClickListener(OnImageClickListener onImageClickListener) {
         mOnImageClickListener = onImageClickListener;
+        if (mAdapter != null) {
+            mAdapter.setOnImageClickListener(onImageClickListener);
+        }
     }
+
+    private OnPageClickListener mOnPageClickListener;
+    public OnPageClickListener getOnPageClickListener() {
+        return mOnPageClickListener;
+    }
+    public void setOnPageClickListener(OnPageClickListener onPageClickListener) {
+        mOnPageClickListener = onPageClickListener;
+        if (mAdapter != null) {
+            mAdapter.setOnPageClickListenerListener(onPageClickListener);
+        }
+    }
+
 
 
 
@@ -90,10 +100,7 @@ public class ImagePager extends ViewGroup {
         mPager = new Pager(mContext);
         addView(mPager, new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT));
         mIndicator = new TextIndicator(mContext);
-        addView((View)mIndicator, new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT));
-        mActionBar = new ActionBar(mContext);
-        addView(mActionBar, new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT));
-        hideActionBar();
+        addView((View) mIndicator, new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT));
 
 
         mPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
@@ -167,7 +174,7 @@ public class ImagePager extends ViewGroup {
     protected void onLayout(boolean changed, int l, int t, int r, int b) {
         int childCount = getChildCount();
         if (childCount != CHILD_COUNT) {
-            Log.e(TAG, "wtf, child count must be 3!");
+            Log.e(TAG, "wtf, child count must be " + CHILD_COUNT + "!");
         }
 
         for (int i = 0; i < childCount; ++i) {
@@ -178,9 +185,7 @@ public class ImagePager extends ViewGroup {
             int right = r;
             int bottom = b;
 
-            if (childView instanceof ActionBar) {
-                // do nothing
-            } else if (childView instanceof Indicator) {
+            if (childView instanceof Indicator) {
                 int horizontalMargin = (getMeasuredWidth() - childView.getMeasuredWidth()) / 2;
                 left += horizontalMargin;
                 right -= horizontalMargin;
@@ -198,24 +203,6 @@ public class ImagePager extends ViewGroup {
         }
     }
 
-    private void toggleActionBarVisibility() {
-        if (mActionBar.getVisibility() == INVISIBLE) {
-            showActionBar();
-        } else {
-            hideActionBar();
-        }
-    }
-
-    private void showActionBar() {
-        mActionBar.setVisibility(VISIBLE);
-        Log.d(TAG, "show actionbar");
-    }
-
-    private void hideActionBar() {
-        mActionBar.setVisibility(INVISIBLE);
-        Log.d(TAG, "hide actionbar");
-    }
-
     public interface OnImageChangeListener {
         void onPageScrolled(int position, float positionOffset, int positionOffsetPixels);
         void onPageSelected(int position);
@@ -224,5 +211,9 @@ public class ImagePager extends ViewGroup {
 
     public interface OnImageClickListener {
         void onImageClick();
+    }
+
+    public interface OnPageClickListener {
+        void onPageClick();
     }
 }
