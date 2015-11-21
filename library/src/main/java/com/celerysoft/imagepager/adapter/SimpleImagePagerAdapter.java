@@ -2,14 +2,13 @@ package com.celerysoft.imagepager.adapter;
 
 import android.content.Context;
 import android.graphics.Bitmap;
-import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.Drawable;
 
 import com.celerysoft.imagepager.util.ImageUtil;
 
 import uk.co.senab.photoview.PhotoView;
 
 /**
+ * Simple image pager adapter
  * Created by Celery on 2015-11-18.
  */
 public class SimpleImagePagerAdapter extends ImagePagerAdapter {
@@ -18,17 +17,23 @@ public class SimpleImagePagerAdapter extends ImagePagerAdapter {
 
     private int[] mImageResIds;
     public void setImageResIds(int[] imageResIds) {
+        removeAllCollection();
         mImageResIds = imageResIds;
-        mImagePaths = null;
     }
 
     private String[] mImagePaths;
     public void setImagePaths(String[] imagePaths) {
-        mImageResIds = null;
+        removeAllCollection();
         mImagePaths = imagePaths;
-        mImageDrawables = new Drawable[imagePaths.length];
+        mImageBitmaps = new Bitmap[imagePaths.length];
     }
-    private Drawable[] mImageDrawables;
+    private Bitmap[] mImageBitmaps;
+
+    private String[] mImageUris;
+    public void setImageUris(String[] imageUris) {
+        removeAllCollection();
+        mImageUris = imageUris;
+    }
 
     public SimpleImagePagerAdapter(Context context) {
         mContext = context;
@@ -40,15 +45,14 @@ public class SimpleImagePagerAdapter extends ImagePagerAdapter {
         if (mImageResIds != null && mImageResIds.length > position) {
             photoView.setImageResource(mImageResIds[position]);
         } else if (mImagePaths != null && mImagePaths.length > position) {
-            Drawable drawable;
-            if (mImageDrawables[position] != null) {
-                drawable = mImageDrawables[position];
+            Bitmap bitmap;
+            if (mImageBitmaps[position] != null) {
+                bitmap = mImageBitmaps[position];
             } else {
-                Bitmap bitmap = ImageUtil.getBitmap(mContext, mImagePaths[position]);
-                drawable = new BitmapDrawable(mContext.getResources(), bitmap);
-                //Drawable drawable = new BitmapDrawable(bitmap);
+                bitmap = ImageUtil.getBitmap(mContext, mImagePaths[position]);
+                mImageBitmaps[position] = bitmap;
+                photoView.setImageBitmap(bitmap);
             }
-            photoView.setImageDrawable(drawable);
         }
         return photoView;
     }
@@ -61,5 +65,12 @@ public class SimpleImagePagerAdapter extends ImagePagerAdapter {
             return mImagePaths.length;
         }
         return 0;
+    }
+
+    private void removeAllCollection() {
+        mImageResIds = null;
+        mImagePaths = null;
+        mImageBitmaps = null;
+        mImageUris = null;
     }
 }
