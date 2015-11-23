@@ -51,8 +51,8 @@ public class SimpleImagePagerAdapter extends ImagePagerAdapter {
             } else {
                 bitmap = ImageUtil.getBitmap(mContext, mImagePaths[position]);
                 mImageBitmaps[position] = bitmap;
-                photoView.setImageBitmap(bitmap);
             }
+            photoView.setImageBitmap(bitmap);
         }
         return photoView;
     }
