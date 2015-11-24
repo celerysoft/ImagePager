@@ -38,9 +38,9 @@ public class MainActivity extends Activity {
         imageResIds[2] = R.drawable._00003;
         adapter.setImageResIds(imageResIds);
         String[] imagePaths = new String[3];
-        imagePaths[0] = "/storage/emulated/0/Pictures/GIS/GIS_20151116_162430478918924.jpg";
-        imagePaths[1] = "/storage/emulated/0/Pictures/GIS/GIS_20151116_165549478918924.jpg";
-        imagePaths[2] = "/storage/emulated/0/Pictures/GIS/GIS_20151117_155447478918924.jpg";
+        imagePaths[0] = "/storage/emulated/0/Pictures/GIS/20151123_104716.jpg";
+        imagePaths[1] = "/storage/emulated/0/Pictures/GIS/20151123_104729.jpg";
+        imagePaths[2] = "/storage/emulated/0/Pictures/GIS/20151123_105347.jpg";
         adapter.setImagePaths(imagePaths);
 
         mImagePager.setAdapter(adapter);
