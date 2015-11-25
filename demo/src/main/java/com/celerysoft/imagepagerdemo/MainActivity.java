@@ -9,6 +9,7 @@ import android.widget.Button;
 import com.celerysoft.imagepager.ImagePager;
 import com.celerysoft.imagepager.adapter.ImagePagerAdapter;
 import com.celerysoft.imagepager.adapter.SimpleImagePagerAdapter;
+import com.celerysoft.imagepager.animation.DepthPageTransformer;
 import com.celerysoft.imagepager.view.indicator.Indicator;
 
 import java.util.ArrayList;
@@ -43,6 +44,7 @@ public class MainActivity extends Activity {
                 toggleActionBarVisibility();
             }
         });
+        mImagePager.setPageTransformer(true, new DepthPageTransformer());
 
         mBtnBack.setOnClickListener(new View.OnClickListener() {
             @Override
