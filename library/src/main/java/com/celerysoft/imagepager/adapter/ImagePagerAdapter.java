@@ -9,6 +9,7 @@ import android.widget.ImageView;
 
 import com.celerysoft.imagepager.BuildConfig;
 import com.celerysoft.imagepager.ImagePager;
+import com.celerysoft.imagepager.view.indicator.Indicator;
 
 import java.util.ArrayList;
 
@@ -28,6 +29,14 @@ public abstract class ImagePagerAdapter extends PagerAdapter {
 
     private ArrayList<PhotoView> mImageViews = new ArrayList<>();
     private PhotoView mCurrentPrimaryItem = null;
+    /**
+     * {@link Indicator} of {@link ImagePager}, when a {@link ImagePager} call {@link ImagePager#setAdapter},
+     * mIndicator is assigned as the {@link Indicator} of the {@link ImagePager}.
+     **/
+    private Indicator mIndicator;
+    public void setIndicator(Indicator indicator) {
+        mIndicator = indicator;
+    }
 
     private ImagePager.OnImageClickListener mOnPhotoTapListener;
     public void setOnImageClickListener(ImagePager.OnImageClickListener onImageClickListener) {
@@ -45,6 +54,13 @@ public abstract class ImagePagerAdapter extends PagerAdapter {
 
     public abstract PhotoView getItem(int position);
 
+    /**
+     * remove image from adapter
+     * @param imagePosition position of image
+     * @return true if remove successfully, false if index out of bound etc.
+     */
+    public abstract boolean removeImage(int imagePosition);
+
     @Override
     public abstract int getCount();
 
@@ -55,25 +71,25 @@ public abstract class ImagePagerAdapter extends PagerAdapter {
 
     @Override
     public Object instantiateItem(ViewGroup container, int position) {
-//        if (mImageViews.size() > position) {
-//            PhotoView v = mImageViews.get(position);
-//            if (v != null) {
-//                container.addView(v, ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
-//                return v;
-//            }
-//        }
-//
-//        PhotoView imageView = getItem(position);
-//        while (mImageViews.size() <= position) {
-//            mImageViews.add(null);
-//        }
-//        imageView.setVisibility(View.VISIBLE);
-//        mImageViews.set(position, imageView);
-//
-//        container.addView(imageView, ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
-//
-//        return imageView;
+        if (mImageViews.size() > position) {
+            PhotoView v = mImageViews.get(position);
+            if (v != null) {
+                container.addView(v, ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+                return v;
+            }
+        }
+
         PhotoView imageView = getItem(position);
+        while (mImageViews.size() <= position) {
+            mImageViews.add(null);
+        }
+        imageView.setVisibility(View.VISIBLE);
+        mImageViews.set(position, imageView);
+
+//        container.addView(imageView, ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+
+//        return imageView;
+//        PhotoView imageView = getItem(position);
         if (mOnPageClickListener != null) {
             imageView.setOnViewTapListener(new PhotoViewAttacher.OnViewTapListener() {
                 @Override
@@ -91,8 +107,6 @@ public abstract class ImagePagerAdapter extends PagerAdapter {
             });
         }
 
-
-
         container.addView(imageView, ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
 
         return imageView;
@@ -100,16 +114,17 @@ public abstract class ImagePagerAdapter extends PagerAdapter {
 
     @Override
     public void destroyItem(ViewGroup container, int position, Object object) {
-//        PhotoView imageView = (PhotoView) object;
-//        if (imageView != null) {
-//            mImageViews.remove(imageView);
-//        }
+        PhotoView imageView = (PhotoView) object;
+        if (imageView != null) {
+            mImageViews.remove(imageView);
+        }
         container.removeView((View) object);
     }
 
-//    @Override
-//    public void setPrimaryItem(ViewGroup container, int position, Object object) {
-//        PhotoView imageView = (PhotoView) object;
+    @Override
+    public void setPrimaryItem(ViewGroup container, int position, Object object) {
+        PhotoView imageView = (PhotoView) object;
+
 //        if (imageView != mCurrentPrimaryItem) {
 //            if (mCurrentPrimaryItem != null) {
 //                mCurrentPrimaryItem.setVisibility(View.INVISIBLE);
@@ -118,10 +133,12 @@ public abstract class ImagePagerAdapter extends PagerAdapter {
 //            if (imageView != null) {
 //                imageView.setVisibility(View.VISIBLE);
 //            }
-//
-//            mCurrentPrimaryItem = imageView;
 //        }
-//    }
+
+        mCurrentPrimaryItem = imageView;
+    }
+
+
 
     @Override
     public int getItemPosition(Object object) {
@@ -146,4 +163,12 @@ public abstract class ImagePagerAdapter extends PagerAdapter {
         super.restoreState(state, loader);
     }
 
+    @Override
+    public void notifyDataSetChanged() {
+        mImageViews = new ArrayList<>();
+
+        mIndicator.setImageCount(getCount());
+
+        super.notifyDataSetChanged();
+    }
 }

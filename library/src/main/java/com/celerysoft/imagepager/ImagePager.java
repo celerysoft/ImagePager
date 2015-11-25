@@ -42,6 +42,7 @@ public class ImagePager extends ViewGroup {
         }
         mPager.setAdapter(adapter);
         mIndicator.setImageCount(adapter.getCount());
+        mAdapter.setIndicator(mIndicator);
     }
 
     private OnImageChangeListener mOnImageChangeListener;
@@ -73,10 +74,6 @@ public class ImagePager extends ViewGroup {
             mAdapter.setOnPageClickListenerListener(onPageClickListener);
         }
     }
-
-
-
-
 
     public ImagePager(Context context) {
         super(context);
@@ -110,6 +107,7 @@ public class ImagePager extends ViewGroup {
                     mOnImageChangeListener.onPageScrolled(position, positionOffset, positionOffsetPixels);
                 }
             }
+
             @Override
             public void onPageSelected(int position) {
                 if (mOnImageChangeListener != null) {
@@ -117,6 +115,7 @@ public class ImagePager extends ViewGroup {
                 }
                 mIndicator.onPageSelected(position);
             }
+
             @Override
             public void onPageScrollStateChanged(int state) {
                 if (mOnImageChangeListener != null) {
@@ -201,6 +200,14 @@ public class ImagePager extends ViewGroup {
 
             childView.layout(left, top, right, bottom);
         }
+    }
+
+    public int getCurrentImagePosition() {
+        return mPager.getCurrentItem();
+    }
+
+    public void moveToImage(int imagePosition) {
+        mPager.setCurrentItem(imagePosition);
     }
 
     public interface OnImageChangeListener {
