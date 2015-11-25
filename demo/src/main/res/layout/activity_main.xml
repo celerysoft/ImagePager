@@ -8,16 +8,46 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>
 
-    <TextView
-        android:id="@+id/mian_action_bar"
+    <LinearLayout
+        android:id="@+id/main_action_bar"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="56dp"
         android:layout_alignParentTop="true"
         android:visibility="invisible"
-        android:text="Show the action bar"
-        android:textSize="20sp"
-        android:gravity="center"
-        android:background="#DEFFFFFF"
-        android:textColor="#DE000000"/>
+        android:background="#DEFFFFFF">
+
+        <Button
+            android:id="@+id/main_btn_back"
+            android:layout_width="wrap_content"
+            android:layout_height="52dp"
+            android:layout_gravity="center"
+            android:text="back"/>
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_marginLeft="16dp"
+            android:text="action bar content"
+            android:textSize="20sp"
+            android:layout_gravity="center"
+            android:gravity="center_vertical"
+            android:textColor="#DE000000"/>
+
+        <Button
+            android:id="@+id/main_btn_delete"
+            android:layout_width="wrap_content"
+            android:layout_height="52dp"
+            android:layout_gravity="center"
+            android:text="delete"/>
+
+        <Button
+            android:id="@+id/main_btn_reset"
+            android:layout_width="wrap_content"
+            android:layout_height="52dp"
+            android:layout_gravity="center"
+            android:text="reset"/>
+    </LinearLayout>
+
 
 </RelativeLayout>
