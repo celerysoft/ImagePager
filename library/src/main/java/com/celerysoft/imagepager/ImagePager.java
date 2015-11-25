@@ -210,6 +210,10 @@ public class ImagePager extends ViewGroup {
         mPager.setCurrentItem(imagePosition);
     }
 
+    public void setPageTransformer(boolean reverseDrawingOrder, ViewPager.PageTransformer transformer) {
+        mPager.setPageTransformer(reverseDrawingOrder, transformer);
+    }
+
     public interface OnImageChangeListener {
         void onPageScrolled(int position, float positionOffset, int positionOffsetPixels);
         void onPageSelected(int position);
