@@ -24,13 +24,9 @@ To be added.
 
 ## Screenshots
 
-To be added.
+![Screenshot 1](https://raw.githubusercontent.com/celerysoft/README/master/ImagePager/sc01.gif "Screenshot 1")
 
-![Screenshot 1](https://raw.githubusercontent.com/celerysoft/README/master/ImagePager/sc01.png "Screenshot 1")
-
-![Screenshot 2](https://raw.githubusercontent.com/celerysoft/README/master/ImagePager/sc02.png "Screenshot 2")
-
-![Screenshot 3](https://raw.githubusercontent.com/celerysoft/README/master/ImagePager/sc03.png "Screenshot 3")
+![Screenshot 2](https://raw.githubusercontent.com/celerysoft/README/master/ImagePager/sc02.gif "Screenshot 2")
 
 ## Acknowledgement
 
