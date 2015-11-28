@@ -88,6 +88,7 @@ public class SimpleImagePagerAdapter extends ImagePagerAdapter {
                 mImageResIds.remove(imagePosition);
             } else if (mImagePaths != null) {
                 mImagePaths.remove(imagePosition);
+                mImageBitmaps.remove(imagePosition);
             } else if (mImageBitmaps != null) {
                 mImageBitmaps.remove(imagePosition);
             } else if (mImageUrls != null) {
