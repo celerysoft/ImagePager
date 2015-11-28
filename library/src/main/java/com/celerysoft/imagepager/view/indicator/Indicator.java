@@ -5,5 +5,6 @@ package com.celerysoft.imagepager.view.indicator;
  */
 public interface Indicator {
     public void onPageSelected(int position);
-    public void setImageCount(int imageCount);
+    public void onPageDeleted();
+    public void onPageAdapterChanged(int imageCount);
 }

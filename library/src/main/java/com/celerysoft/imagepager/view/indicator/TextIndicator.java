@@ -17,7 +17,7 @@ public class TextIndicator extends TextView implements Indicator {
     private Context mContext;
 
     private int mImageCount;
-    private int oldPosition = 0;
+    private int mCurrentImagePosition = 0;
 
     public TextIndicator(Context context) {
         super(context);
@@ -40,27 +40,34 @@ public class TextIndicator extends TextView implements Indicator {
     public void onPageSelected(int position) {
         String text = (position + 1) + "/" + mImageCount;
         setText(text);
-        oldPosition = position;
+        mCurrentImagePosition = position;
     }
 
     @Override
-    public void setImageCount(int imageCount) {
-        mImageCount = imageCount;
+    public void onPageDeleted() {
+        mImageCount -= 1;
+        mCurrentImagePosition = mCurrentImagePosition < mImageCount ?
+                mCurrentImagePosition : mImageCount - 1;
         String text;
-        if (imageCount <= 0) {
+        if (mImageCount <= 0) {
             setTextSize(DensityUtil.sp2px(mContext, 24));
             text = mContext.getString(R.string.no_images);
-            if (imageCount < 0) {
+            if (mImageCount < 0) {
                 Log.e(TAG, "image count less than 0, it could not be happened!");
             }
         } else {
             setTextSize(DensityUtil.sp2px(mContext, 16));
-            if (oldPosition < imageCount) {
-                text = (oldPosition + 1) + "/" + mImageCount;
-            } else {
-                text = (imageCount - 1) + "/" + mImageCount;
-            }
+            text = (mCurrentImagePosition + 1) + "/" + mImageCount;
         }
+        setText(text);
+    }
+
+    @Override
+    public void onPageAdapterChanged(int imageCount) {
+        mImageCount = imageCount;
+        mCurrentImagePosition = 0;
+
+        String text = "1/" + mImageCount;
         setText(text);
     }
 }

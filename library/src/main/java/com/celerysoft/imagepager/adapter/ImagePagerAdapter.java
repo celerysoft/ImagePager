@@ -2,10 +2,8 @@ package com.celerysoft.imagepager.adapter;
 
 import android.os.Parcelable;
 import android.support.v4.view.PagerAdapter;
-import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 
 import com.celerysoft.imagepager.BuildConfig;
 import com.celerysoft.imagepager.ImagePager;
@@ -29,6 +27,7 @@ public abstract class ImagePagerAdapter extends PagerAdapter {
 
     private ArrayList<PhotoView> mImageViews = new ArrayList<>();
     private PhotoView mCurrentPrimaryItem = null;
+    private int mImageViewCount;
     /**
      * {@link Indicator} of {@link ImagePager}, when a {@link ImagePager} call {@link ImagePager#setAdapter},
      * mIndicator is assigned as the {@link Indicator} of the {@link ImagePager}.
@@ -165,10 +164,17 @@ public abstract class ImagePagerAdapter extends PagerAdapter {
 
     @Override
     public void notifyDataSetChanged() {
-        mImageViews = new ArrayList<>();
+        if (isDeleteAction()) {
+            mIndicator.onPageDeleted();
+        }
 
-        mIndicator.setImageCount(getCount());
+        mImageViews = new ArrayList<>();
 
         super.notifyDataSetChanged();
     }
+
+    private boolean isDeleteAction() {
+        return mImageViews.size() - getCount() == 1;
+    }
+
 }

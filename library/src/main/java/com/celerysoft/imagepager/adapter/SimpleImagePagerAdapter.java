@@ -58,6 +58,7 @@ public class SimpleImagePagerAdapter extends ImagePagerAdapter {
             if (mImageBitmaps.get(position) != null) {
                 bitmap = mImageBitmaps.get(position);
             } else {
+                // TODO open a new thread to handle this
                 bitmap = ImageUtil.getBitmap(mContext, mImagePaths.get(position));
                 mImageBitmaps.set(position, bitmap);
             }

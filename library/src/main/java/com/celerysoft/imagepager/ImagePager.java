@@ -41,7 +41,7 @@ public class ImagePager extends ViewGroup {
             imagePagerAdapter.setOnImageClickListener(mOnImageClickListener);
         }
         mPager.setAdapter(adapter);
-        mIndicator.setImageCount(adapter.getCount());
+        mIndicator.onPageAdapterChanged(adapter.getCount());
         mAdapter.setIndicator(mIndicator);
     }
 
