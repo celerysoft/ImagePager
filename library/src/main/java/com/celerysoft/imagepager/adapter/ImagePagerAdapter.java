@@ -111,8 +111,10 @@ public abstract class ImagePagerAdapter extends PagerAdapter {
     public void destroyItem(ViewGroup container, int position, Object object) {
         PhotoView imageView = (PhotoView) object;
         if (imageView != null) {
-            int index = mImageViews.indexOf(imageView);
-            mImageViews.set(index, null);
+            if (mImageViews.size() > 0) {
+                int index = mImageViews.indexOf(imageView);
+                mImageViews.set(index, null);
+            }
         }
         container.removeView((View) object);
     }
