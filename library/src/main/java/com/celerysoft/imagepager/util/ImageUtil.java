@@ -9,6 +9,7 @@ import java.io.File;
 
 /**
  * Created by Administrator on 2015-11-20.
+ * ImageUtil
  */
 public class ImageUtil {
 
@@ -40,9 +41,9 @@ public class ImageUtil {
             int photoWidth = options.outWidth;
             int photoHeight = options.outHeight;
 
-            int scaleFactor = Math.min(photoWidth/targetWidth, photoHeight/targetHeight);
+            int inSampleSize = calculateInSampleSize(options, targetWidth, targetHeight);
 
-            options.inSampleSize = scaleFactor;
+            options.inSampleSize = inSampleSize;
             options.inJustDecodeBounds = false;
             bitmap = BitmapFactory.decodeFile(filePath, options);
         } catch (OutOfMemoryError error) {
@@ -50,5 +51,20 @@ public class ImageUtil {
         }
 
         return bitmap;
+    }
+
+    private static int calculateInSampleSize(BitmapFactory.Options options, int targetWidth, int targetHeight) {
+        final int height = options.outHeight;
+        final int width = options.outWidth;
+        int inSampleSize = 1;
+
+        if (height > targetHeight || width > targetWidth) {
+            while ((height / inSampleSize) > targetHeight && (width / inSampleSize) > targetWidth) {
+                //设置inSampleSize为2的幂是因为解码器最终还是会对非2的幂的数进行向下处理，获取到最靠近2的幂的数。
+                inSampleSize *= 2;
+            }
+        }
+
+        return inSampleSize;
     }
 }

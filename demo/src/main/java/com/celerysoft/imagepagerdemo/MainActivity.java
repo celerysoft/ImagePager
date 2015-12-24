@@ -104,6 +104,8 @@ public class MainActivity extends Activity {
             imagePaths.add("/storage/emulated/0/Pictures/GIS/20151123_104716.jpg");
             imagePaths.add("/storage/emulated/0/Pictures/GIS/20151123_104729.jpg");
             imagePaths.add("/storage/emulated/0/Pictures/GIS/20151123_105347.jpg");
+            imagePaths.add("/storage/emulated/0/Pictures/GIS/20151223_103259.jpg");
+            imagePaths.add("/storage/emulated/0/Pictures/GIS/20151211_105652.jpg");
             ((SimpleImagePagerAdapter) mAdapter).setImagePaths(imagePaths);
         }
 

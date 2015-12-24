@@ -21,6 +21,14 @@ public class SimpleImagePagerAdapter extends ImagePagerAdapter {
     private Context mContext;
 
     private ArrayList<Integer> mImageResIds;
+
+    /**
+     *
+     * @param imageResIds
+     * @deprecated when load resource by id, it does not have any handles to the resource.
+     * if the resource is a very very large picture, it may cause OOM or lagging of UI Thread. use {@link #setImagePaths} to instead of.
+     */
+    @Deprecated
     public void setImageResIds(ArrayList<Integer> imageResIds) {
         removeAllCollection();
         mImageResIds = imageResIds;

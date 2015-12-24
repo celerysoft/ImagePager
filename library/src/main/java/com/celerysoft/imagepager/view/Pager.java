@@ -21,7 +21,7 @@ public class Pager extends ViewPager {
     }
 
     private void initPager() {
-        this.setOffscreenPageLimit(10);
+        this.setOffscreenPageLimit(5);
     }
 
     @Override
