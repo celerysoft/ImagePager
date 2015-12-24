@@ -77,7 +77,7 @@ public class MainActivity extends Activity {
     }
 
     private int adapterType = 0;
-    private boolean isYourDemo = false;
+    private boolean isYourDemo = true;
     private void resetAdapter() {
         mAdapter = new SimpleImagePagerAdapter(this);
 
@@ -104,6 +104,8 @@ public class MainActivity extends Activity {
             imagePaths.add("/storage/emulated/0/Pictures/GIS/20151123_104716.jpg");
             imagePaths.add("/storage/emulated/0/Pictures/GIS/20151123_104729.jpg");
             imagePaths.add("/storage/emulated/0/Pictures/GIS/20151123_105347.jpg");
+            imagePaths.add("/storage/emulated/0/Pictures/GIS/20151128_104537.jpg");
+            imagePaths.add("/storage/emulated/0/Pictures/GIS/20151209_153401.jpg");
             imagePaths.add("/storage/emulated/0/Pictures/GIS/20151223_103259.jpg");
             imagePaths.add("/storage/emulated/0/Pictures/GIS/20151211_105652.jpg");
             ((SimpleImagePagerAdapter) mAdapter).setImagePaths(imagePaths);

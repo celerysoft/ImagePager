@@ -85,10 +85,6 @@ public abstract class ImagePagerAdapter extends PagerAdapter {
         imageView.setVisibility(View.VISIBLE);
         mImageViews.set(position, imageView);
 
-//        container.addView(imageView, ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
-
-//        return imageView;
-//        PhotoView imageView = getItem(position);
         if (mOnPageClickListener != null) {
             imageView.setOnViewTapListener(new PhotoViewAttacher.OnViewTapListener() {
                 @Override
@@ -115,7 +111,8 @@ public abstract class ImagePagerAdapter extends PagerAdapter {
     public void destroyItem(ViewGroup container, int position, Object object) {
         PhotoView imageView = (PhotoView) object;
         if (imageView != null) {
-            mImageViews.remove(imageView);
+            int index = mImageViews.indexOf(imageView);
+            mImageViews.set(index, null);
         }
         container.removeView((View) object);
     }
