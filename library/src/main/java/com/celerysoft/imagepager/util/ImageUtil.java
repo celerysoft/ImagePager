@@ -20,13 +20,11 @@ public class ImageUtil {
      * @param filePath file absolute path
      * @return bitmap
      */
-    public static final Bitmap getBitmap(Context context, String filePath) {
+    public static Bitmap getBitmap(Context context, String filePath) {
         File f = new File(filePath);
-        if (f != null) {
-            if (!f.exists()) {
-                Log.w(TAG, "No such file: " + filePath);
-                return null;
-            }
+        if (!f.exists()) {
+            Log.w(TAG, "No such file: " + filePath);
+            return null;
         }
 
         Bitmap bitmap = null;
@@ -41,9 +39,7 @@ public class ImageUtil {
             int photoWidth = options.outWidth;
             int photoHeight = options.outHeight;
 
-            int inSampleSize = calculateInSampleSize(options, targetWidth, targetHeight);
-
-            options.inSampleSize = inSampleSize;
+            options.inSampleSize = calculateInSampleSize(photoWidth, photoHeight, targetWidth, targetHeight);
             options.inJustDecodeBounds = false;
             bitmap = BitmapFactory.decodeFile(filePath, options);
         } catch (OutOfMemoryError error) {
@@ -53,15 +49,52 @@ public class ImageUtil {
         return bitmap;
     }
 
-    private static int calculateInSampleSize(BitmapFactory.Options options, int targetWidth, int targetHeight) {
-        final int height = options.outHeight;
-        final int width = options.outWidth;
+    /**
+     * get bitmap by file absolute path
+     * @param resId resource id
+     * @return bitmap
+     */
+    public static Bitmap getBitmap(Context context, int resId) {
+        Bitmap bitmap = null;
+
+        try {
+            int targetWidth = (int) (context.getResources().getDisplayMetrics().widthPixels * 0.8);
+            int targetHeight = context.getResources().getDisplayMetrics().heightPixels;
+
+            BitmapFactory.Options options = new BitmapFactory.Options();
+            options.inJustDecodeBounds = true;
+            BitmapFactory.decodeResource(context.getResources(), resId, options);
+
+            int photoWidth = options.outWidth;
+            int photoHeight = options.outHeight;
+
+            options.inSampleSize = calculateInSampleSize(photoWidth, photoHeight, targetWidth, targetHeight);
+            options.inJustDecodeBounds = false;
+            bitmap = BitmapFactory.decodeResource(context.getResources(), resId, options);
+        } catch (OutOfMemoryError error) {
+            error.printStackTrace();
+        }
+
+        return bitmap;
+    }
+
+    /**
+     * calculate the scaling of bitmap
+     * @param originalWidth bitmap original width
+     * @param originalHeight bitmap original height
+     * @param targetWidth target width
+     * @param targetHeight target height
+     * @return scaling of bitmap
+     */
+    private static int calculateInSampleSize(int originalWidth, int originalHeight, int targetWidth, int targetHeight) {
         int inSampleSize = 1;
 
-        if (height > targetHeight || width > targetWidth) {
-            while ((height / inSampleSize) > targetHeight && (width / inSampleSize) > targetWidth) {
+        if (originalHeight > targetHeight || originalWidth > targetWidth) {
+            inSampleSize = inSampleSize << 1;
+            while ((originalHeight / inSampleSize) > targetHeight && (originalWidth / inSampleSize) > targetWidth) {
                 //设置inSampleSize为2的幂是因为解码器最终还是会对非2的幂的数进行向下处理，获取到最靠近2的幂的数。
-                inSampleSize *= 2;
+                //inSampleSize *= 2;
+                inSampleSize = inSampleSize << 1;
             }
         }
 
