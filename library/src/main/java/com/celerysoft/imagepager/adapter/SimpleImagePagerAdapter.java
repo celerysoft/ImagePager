@@ -26,7 +26,7 @@ public class SimpleImagePagerAdapter extends ImagePagerAdapter {
         return mImages;
     }
     public void setImages(ArrayList<Image> images) {
-        removeAllCollection();
+        mImageBitmaps = null;
         mImages = images;
 
         createImageBitmaps(images.size());
@@ -43,50 +43,6 @@ public class SimpleImagePagerAdapter extends ImagePagerAdapter {
     }
 
 
-    @Deprecated
-    private ArrayList<Integer> mImageResIds;
-    /**
-     *
-     * @param imageResIds ArrayList of image resource ids
-     * @deprecated use {@link #setImages(ArrayList)} to instead of.
-     */
-    @Deprecated
-    public void setImageResIds(ArrayList<Integer> imageResIds) {
-        removeAllCollection();
-        mImageResIds = imageResIds;
-
-        createImageBitmaps(imageResIds.size());
-    }
-
-    @Deprecated
-    private ArrayList<String> mImagePaths;
-    /**
-     *
-     * @param imagePaths ArrayList of image file paths
-     * @deprecated use {@link #setImages(ArrayList)} to instead of.
-     */
-    @Deprecated
-    public void setImagePaths(ArrayList<String> imagePaths) {
-        removeAllCollection();
-        mImagePaths = imagePaths;
-
-        createImageBitmaps(imagePaths.size());
-    }
-
-    @Deprecated
-    private ArrayList<String> mImageUrls;
-    /**
-     *
-     * @param imageUrls ArrayList of internet image file urls
-     * @deprecated use {@link #setImages(ArrayList)} to instead of.
-     */
-    @Deprecated
-    public void setImageUrls(ArrayList<String> imageUrls) {
-        removeAllCollection();
-        mImageUrls = imageUrls;
-    }
-
-
     public SimpleImagePagerAdapter(Context context) {
         mContext = context;
     }
@@ -94,29 +50,8 @@ public class SimpleImagePagerAdapter extends ImagePagerAdapter {
     @Override
     public PhotoView getItem(int position) {
         PhotoView photoView = new PhotoView(mContext);
-        if (mImageResIds != null && mImageResIds.size() > position) {
-            Bitmap bitmap;
-            if (mImageBitmaps.get(position) != null) {
-                bitmap = mImageBitmaps.get(position);
-            } else {
-                // TODO open a new thread to handle this
-                bitmap = ImageUtil.getBitmap(mContext, mImageResIds.get(position));
-                mImageBitmaps.set(position, bitmap);
-            }
-            photoView.setImageBitmap(bitmap);
-        } else if (mImagePaths != null && mImagePaths.size() > position) {
-            Bitmap bitmap;
-            if (mImageBitmaps.get(position) != null) {
-                bitmap = mImageBitmaps.get(position);
-            } else {
-                // TODO open a new thread to handle this
-                bitmap = ImageUtil.getBitmap(mContext, mImagePaths.get(position));
-                mImageBitmaps.set(position, bitmap);
-            }
-            photoView.setImageBitmap(bitmap);
-        } else if (mImageUrls != null && mImageUrls.size() > position) {
-            // TODO handle image from internet
-        } else if (mImages != null && mImages.size() > position) {
+
+         if (mImages != null && mImages.size() > position) {
             Bitmap bitmap;
             if (mImageBitmaps.get(position) != null) {
                 bitmap = mImageBitmaps.get(position);
@@ -127,18 +62,13 @@ public class SimpleImagePagerAdapter extends ImagePagerAdapter {
             }
             photoView.setImageBitmap(bitmap);
         }
+
         return photoView;
     }
 
     @Override
     public int getCount() {
-        if (mImageResIds != null) {
-            return mImageResIds.size();
-        } else if (mImagePaths != null) {
-            return mImagePaths.size();
-        } else if (mImageUrls != null) {
-            return mImageUrls.size();
-        } else if (mImages != null) {
+        if (mImages != null) {
             return mImages.size();
         }
         return 0;
@@ -148,15 +78,7 @@ public class SimpleImagePagerAdapter extends ImagePagerAdapter {
     public boolean removeImage(int imagePosition) {
         boolean succeeded = true;
         try {
-            if (mImageResIds != null) {
-                mImageResIds.remove(imagePosition);
-                mImageBitmaps.remove(imagePosition);
-            } else if (mImagePaths != null) {
-                mImagePaths.remove(imagePosition);
-                mImageBitmaps.remove(imagePosition);
-            } else if (mImageUrls != null) {
-                mImageUrls.remove(imagePosition);
-            } else if (mImages != null) {
+            if (mImages != null) {
                 mImages.remove(imagePosition);
                 mImageBitmaps.remove(imagePosition);
             } else {
@@ -172,13 +94,6 @@ public class SimpleImagePagerAdapter extends ImagePagerAdapter {
         }
 
         return succeeded;
-    }
-
-    private void removeAllCollection() {
-        mImageResIds = null;
-        mImagePaths = null;
-        mImageBitmaps = null;
-        mImageUrls = null;
     }
 
     private void createImageBitmaps(int imageCount) {
