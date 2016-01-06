@@ -3,15 +3,12 @@ package com.celerysoft.imagepagerdemo;
 import android.app.Activity;
 import android.os.Bundle;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.Button;
 
 import com.celerysoft.imagepager.ImagePager;
-import com.celerysoft.imagepager.adapter.ImagePagerAdapter;
 import com.celerysoft.imagepager.adapter.SimpleImagePagerAdapter;
 import com.celerysoft.imagepager.animation.DepthPageTransformer;
 import com.celerysoft.imagepager.animation.ZoomOutPageTransformer;
-import com.celerysoft.imagepager.view.indicator.Indicator;
 
 import java.util.ArrayList;
 
@@ -20,7 +17,7 @@ import java.util.ArrayList;
  */
 public class MainActivity extends Activity {
     private ImagePager mImagePager;
-    private ImagePagerAdapter mAdapter;
+    private SimpleImagePagerAdapter mAdapter;
 
     private View mActionBar;
     private Button mBtnBack;
@@ -78,6 +75,7 @@ public class MainActivity extends Activity {
     }
 
     private int adapterType = 0;
+    // set it to true when it turns to your demo
     private boolean isYourDemo = false;
     private void resetAdapter() {
         mAdapter = new SimpleImagePagerAdapter(this);
@@ -110,7 +108,7 @@ public class MainActivity extends Activity {
             image3.setImageResId(R.drawable._00003);
             images.add(image3);
 
-            ((SimpleImagePagerAdapter) mAdapter).setImages(images);
+            mAdapter.setImages(images);
         } else if (type == 0) {
             // set your own local image paths
             ArrayList<SimpleImagePagerAdapter.Image> images = new ArrayList<>();
@@ -143,7 +141,7 @@ public class MainActivity extends Activity {
             image7.setImagePath("/storage/emulated/0/Pictures/GIS/20151211_105652.jpg");
             images.add(image7);
 
-            ((SimpleImagePagerAdapter) mAdapter).setImages(images);
+            mAdapter.setImages(images);
         }
 
         adapterType++;
