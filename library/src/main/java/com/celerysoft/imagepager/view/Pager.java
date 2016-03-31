@@ -14,11 +14,6 @@ public class Pager extends ViewPager {
 
     public Pager(Context context) {
         super(context);
-        initPager();
-    }
-
-    private void initPager() {
-        this.setOffscreenPageLimit(5);
     }
 
     @Override

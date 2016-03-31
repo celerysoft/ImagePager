@@ -6,6 +6,7 @@ import android.graphics.BitmapFactory;
 import android.util.Log;
 
 import java.io.File;
+import java.io.FileDescriptor;
 
 /**
  * Created by Administrator on 2015-11-20.
@@ -71,6 +72,30 @@ public class ImageUtil {
             options.inSampleSize = calculateInSampleSize(photoWidth, photoHeight, targetWidth, targetHeight);
             options.inJustDecodeBounds = false;
             bitmap = BitmapFactory.decodeResource(context.getResources(), resId, options);
+        } catch (OutOfMemoryError error) {
+            error.printStackTrace();
+        }
+
+        return bitmap;
+    }
+
+    public static Bitmap getBitmap(Context context, FileDescriptor fileDescriptor) {
+        Bitmap bitmap = null;
+
+        try {
+            int targetWidth = (int) (context.getResources().getDisplayMetrics().widthPixels * 0.8);
+            int targetHeight = context.getResources().getDisplayMetrics().heightPixels;
+
+            BitmapFactory.Options options = new BitmapFactory.Options();
+            options.inJustDecodeBounds = true;
+            BitmapFactory.decodeFileDescriptor(fileDescriptor, null, options);
+
+            int photoWidth = options.outWidth;
+            int photoHeight = options.outHeight;
+
+            options.inSampleSize = calculateInSampleSize(photoWidth, photoHeight, targetWidth, targetHeight);
+            options.inJustDecodeBounds = false;
+            bitmap = BitmapFactory.decodeFileDescriptor(fileDescriptor, null, options);
         } catch (OutOfMemoryError error) {
             error.printStackTrace();
         }

@@ -214,6 +214,10 @@ public class ImagePager extends ViewGroup {
         mPager.setPageTransformer(reverseDrawingOrder, transformer);
     }
 
+    public void setOffscreenPageLimit(int limit) {
+        mPager.setOffscreenPageLimit(limit);
+    }
+
     public interface OnImageChangeListener {
         void onPageScrolled(int position, float positionOffset, int positionOffsetPixels);
         void onPageSelected(int position);

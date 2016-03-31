@@ -4,6 +4,7 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.util.Log;
 
+import com.celerysoft.imagepager.util.ImageLoader;
 import com.celerysoft.imagepager.util.ImageUtil;
 
 import java.util.ArrayList;
@@ -20,6 +21,8 @@ public class SimpleImagePagerAdapter extends ImagePagerAdapter {
     private Context mContext;
 
     private ArrayList<Bitmap> mImageBitmaps;
+
+    private ImageLoader mImageLoader;
 
     private ArrayList<Image> mImages;
     public ArrayList<Image> getImages() {
@@ -45,6 +48,7 @@ public class SimpleImagePagerAdapter extends ImagePagerAdapter {
 
     public SimpleImagePagerAdapter(Context context) {
         mContext = context;
+        mImageLoader = ImageLoader.build(context);
     }
 
     @Override
@@ -58,6 +62,7 @@ public class SimpleImagePagerAdapter extends ImagePagerAdapter {
             } else {
                 // TODO open a new thread to handle this
                 bitmap = mImages.get(position).getBitmap();
+                //mImageLoader.bindPhotoView();
                 mImageBitmaps.set(position, bitmap);
             }
             photoView.setImageBitmap(bitmap);
