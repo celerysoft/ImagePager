@@ -8,6 +8,10 @@ Image Pager is an Android widget, Implementation of ViewPager for Android that s
 
  * It extends ViewPager, so it works like a ViewPager
 
+ * Load image from Resource, External Storage or the Internet
+
+ * with memory cache and disk cache supported
+
 ## Technical Information
 
 * Required minimum API level: 14(Android 4.0)
@@ -22,7 +26,7 @@ Image Pager is an Android widget, Implementation of ViewPager for Android that s
 
 ```
 dependencies {
-        compile 'com.celerysoft:imagepager:1.1.0'
+        compile 'com.celerysoft:imagepager:2.0.0'
 }
 ```
 
@@ -50,6 +54,8 @@ Create an adapter for the ImagePager, you can see it in the [demo](https://githu
 ## Credits
 
 [PhotoView](https://github.com/chrisbanes/PhotoView)
+
+[DiskLruCache](http://developer.android.com/samples/DisplayingBitmaps/src/com.example.android.displayingbitmaps/util/DiskLruCache.html)
 
 ## License
 
