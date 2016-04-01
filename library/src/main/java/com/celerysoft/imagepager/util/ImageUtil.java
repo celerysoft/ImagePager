@@ -1,6 +1,7 @@
 package com.celerysoft.imagepager.util;
 
 import android.content.Context;
+import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.util.Log;
@@ -22,6 +23,20 @@ public class ImageUtil {
      * @return bitmap
      */
     public static Bitmap getBitmap(Context context, String filePath) {
+        int targetWidth = (int) (context.getResources().getDisplayMetrics().widthPixels * 0.8);
+        int targetHeight = context.getResources().getDisplayMetrics().heightPixels;
+
+        return getBitmap(filePath, targetWidth, targetHeight);
+    }
+
+    /**
+     * get bitmap by file absolute path
+     * @param filePath file absolute path
+     * @param targetWidth
+     * @param targetHeight
+     * @return bitmap
+     */
+    public static Bitmap getBitmap(String filePath, int targetWidth, int targetHeight) {
         File f = new File(filePath);
         if (!f.exists()) {
             Log.w(TAG, "No such file: " + filePath);
@@ -30,9 +45,6 @@ public class ImageUtil {
 
         Bitmap bitmap = null;
         try {
-            int targetWidth = (int) (context.getResources().getDisplayMetrics().widthPixels * 0.8);
-            int targetHeight = context.getResources().getDisplayMetrics().heightPixels;
-
             BitmapFactory.Options options = new BitmapFactory.Options();
             options.inJustDecodeBounds = true;
             BitmapFactory.decodeFile(filePath, options);
@@ -56,22 +68,31 @@ public class ImageUtil {
      * @return bitmap
      */
     public static Bitmap getBitmap(Context context, int resId) {
+        int targetWidth = (int) (context.getResources().getDisplayMetrics().widthPixels * 0.8);
+        int targetHeight = context.getResources().getDisplayMetrics().heightPixels;
+
+        return getBitmap(context.getResources(), resId, targetWidth, targetHeight);
+    }
+
+    /**
+     * get bitmap by file absolute path
+     * @param resId resource id
+     * @return bitmap
+     */
+    public static Bitmap getBitmap(Resources resources, int resId, int targetWidth, int targetHeight) {
         Bitmap bitmap = null;
 
         try {
-            int targetWidth = (int) (context.getResources().getDisplayMetrics().widthPixels * 0.8);
-            int targetHeight = context.getResources().getDisplayMetrics().heightPixels;
-
             BitmapFactory.Options options = new BitmapFactory.Options();
             options.inJustDecodeBounds = true;
-            BitmapFactory.decodeResource(context.getResources(), resId, options);
+            BitmapFactory.decodeResource(resources, resId, options);
 
             int photoWidth = options.outWidth;
             int photoHeight = options.outHeight;
 
             options.inSampleSize = calculateInSampleSize(photoWidth, photoHeight, targetWidth, targetHeight);
             options.inJustDecodeBounds = false;
-            bitmap = BitmapFactory.decodeResource(context.getResources(), resId, options);
+            bitmap = BitmapFactory.decodeResource(resources, resId, options);
         } catch (OutOfMemoryError error) {
             error.printStackTrace();
         }
@@ -80,12 +101,16 @@ public class ImageUtil {
     }
 
     public static Bitmap getBitmap(Context context, FileDescriptor fileDescriptor) {
+        int targetWidth = (int) (context.getResources().getDisplayMetrics().widthPixels * 0.8);
+        int targetHeight = context.getResources().getDisplayMetrics().heightPixels;
+
+        return getBitmap(fileDescriptor, targetWidth, targetHeight);
+    }
+
+    public static Bitmap getBitmap(FileDescriptor fileDescriptor, int targetWidth, int targetHeight) {
         Bitmap bitmap = null;
 
         try {
-            int targetWidth = (int) (context.getResources().getDisplayMetrics().widthPixels * 0.8);
-            int targetHeight = context.getResources().getDisplayMetrics().heightPixels;
-
             BitmapFactory.Options options = new BitmapFactory.Options();
             options.inJustDecodeBounds = true;
             BitmapFactory.decodeFileDescriptor(fileDescriptor, null, options);
@@ -102,6 +127,8 @@ public class ImageUtil {
 
         return bitmap;
     }
+
+
 
     /**
      * calculate the scaling of bitmap

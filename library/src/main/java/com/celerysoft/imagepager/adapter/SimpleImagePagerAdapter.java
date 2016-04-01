@@ -4,6 +4,7 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.util.Log;
 
+import com.celerysoft.imagepager.R;
 import com.celerysoft.imagepager.util.ImageLoader;
 import com.celerysoft.imagepager.util.ImageUtil;
 
@@ -20,8 +21,6 @@ public class SimpleImagePagerAdapter extends ImagePagerAdapter {
 
     private Context mContext;
 
-    private ArrayList<Bitmap> mImageBitmaps;
-
     private ImageLoader mImageLoader;
 
     private ArrayList<Image> mImages;
@@ -29,20 +28,13 @@ public class SimpleImagePagerAdapter extends ImagePagerAdapter {
         return mImages;
     }
     public void setImages(ArrayList<Image> images) {
-        mImageBitmaps = null;
         mImages = images;
-
-        createImageBitmaps(images.size());
     }
     public void addImage(Image image) {
         mImages.add(image);
-
-        mImageBitmaps.add(null);
     }
     public void addImage(int index, Image image) {
         mImages.add(index, image);
-
-        mImageBitmaps.add(index, null);
     }
 
 
@@ -53,19 +45,11 @@ public class SimpleImagePagerAdapter extends ImagePagerAdapter {
 
     @Override
     public PhotoView getItem(int position) {
-        PhotoView photoView = new PhotoView(mContext);
+        PhotoView photoView = null;
 
-         if (mImages != null && mImages.size() > position) {
-            Bitmap bitmap;
-            if (mImageBitmaps.get(position) != null) {
-                bitmap = mImageBitmaps.get(position);
-            } else {
-                // TODO open a new thread to handle this
-                bitmap = mImages.get(position).getBitmap();
-                //mImageLoader.bindPhotoView();
-                mImageBitmaps.set(position, bitmap);
-            }
-            photoView.setImageBitmap(bitmap);
+        if (mImages != null && mImages.size() > position) {
+            photoView = new PhotoView(mContext);
+            mImageLoader.bindImageView(mImages.get(position).getUrl(), photoView);
         }
 
         return photoView;
@@ -85,7 +69,6 @@ public class SimpleImagePagerAdapter extends ImagePagerAdapter {
         try {
             if (mImages != null) {
                 mImages.remove(imagePosition);
-                mImageBitmaps.remove(imagePosition);
             } else {
                 succeeded = false;
                 Log.w(TAG, "remove image failed, no collection to handle removing operation.");
@@ -101,36 +84,17 @@ public class SimpleImagePagerAdapter extends ImagePagerAdapter {
         return succeeded;
     }
 
-    private void createImageBitmaps(int imageCount) {
-        mImageBitmaps = new ArrayList<>();
-        for (int i = 0; i < imageCount; ++i) {
-            mImageBitmaps.add(null);
-        }
-    }
-
     public static class Image {
-        private Context mContext;
-
-        public Image(Context context) {
-            mContext = context;
-        }
+        public Image() {}
 
         int mImageResId = -1;
         String mImagePath = null;
         String mImageUrl = null;
 
-        public int getImageResId() {
-            return mImageResId;
-        }
-
         public void setImageResId(int imageResId) {
             mImageResId = imageResId;
             mImagePath = null;
             mImageUrl = null;
-        }
-
-        public String getImagePath() {
-            return mImagePath;
         }
 
         public void setImagePath(String imagePath) {
@@ -139,28 +103,24 @@ public class SimpleImagePagerAdapter extends ImagePagerAdapter {
             mImageUrl = null;
         }
 
-        public String getImageUrl() {
-            return mImageUrl;
-        }
-
         public void setImageUrl(String imageUrl) {
             mImageResId = -1;
             mImageUrl = null;
             mImageUrl = imageUrl;
         }
 
-        public Bitmap getBitmap() {
-            Bitmap bitmap = null;
-
-            if (mImageResId != -1) {
-                bitmap = ImageUtil.getBitmap(mContext, mImageResId);
-            } else if (mImagePath != null) {
-                bitmap = ImageUtil.getBitmap(mContext, mImagePath);
-            } else if (mImageUrl != null) {
-                // TODO handle image from internet
+        public String getUrl() {
+            if(mImageResId != -1) {
+                return Integer.toString(mImageResId);
             }
-
-            return bitmap;
+            if (mImagePath != null) {
+                return mImagePath;
+            }
+            if (mImageUrl != null) {
+                return mImageUrl;
+            }
+            Log.w(TAG, "this image has no url");
+            return null;
         }
     }
 }

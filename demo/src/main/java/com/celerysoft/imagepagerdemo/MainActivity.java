@@ -74,77 +74,57 @@ public class MainActivity extends Activity {
         }
     }
 
-    private int adapterType = 0;
-    // set it to true when it turns to your demo
-    private boolean isYourDemo = false;
     private void resetAdapter() {
+        // set the transformer for pages
+        mImagePager.setPageTransformer(true, new DepthPageTransformer());
+        //mImagePager.setPageTransformer(true, new ZoomOutPageTransformer());
+
         mAdapter = new SimpleImagePagerAdapter(this);
 
-        int type = 0;
-        if (!isYourDemo) {
-            type = 1;
-        } else {
-            if (adapterType % 2 == 0) {
-                type = 1;
-                mImagePager.setPageTransformer(true, new DepthPageTransformer());
-            } else {
-                type = 0;
-                mImagePager.setPageTransformer(true, new ZoomOutPageTransformer());
-            }
-        }
+        ArrayList<SimpleImagePagerAdapter.Image> images = new ArrayList<>();
 
-        if (type == 1) {
-            ArrayList<SimpleImagePagerAdapter.Image> images = new ArrayList<>();
+        SimpleImagePagerAdapter.Image image1 = new SimpleImagePagerAdapter.Image();
+        image1.setImageResId(R.drawable._00001);
+        images.add(image1);
 
-            SimpleImagePagerAdapter.Image image1 = new SimpleImagePagerAdapter.Image(this);
-            image1.setImageResId(R.drawable._00001);
-            images.add(image1);
+        SimpleImagePagerAdapter.Image image2 = new SimpleImagePagerAdapter.Image();
+        image2.setImageResId(R.drawable._00002);
+        images.add(image2);
 
-            SimpleImagePagerAdapter.Image image2 = new SimpleImagePagerAdapter.Image(this);
-            image2.setImageResId(R.drawable._00002);
-            images.add(image2);
+        SimpleImagePagerAdapter.Image image3 = new SimpleImagePagerAdapter.Image();
+        image3.setImageResId(R.drawable._00003);
+        images.add(image3);
 
-            SimpleImagePagerAdapter.Image image3 = new SimpleImagePagerAdapter.Image(this);
-            image3.setImageResId(R.drawable._00003);
-            images.add(image3);
+        SimpleImagePagerAdapter.Image image4 = new SimpleImagePagerAdapter.Image();
+        image4.setImageUrl("http://7xpapo.com1.z0.glb.clouddn.com/2015123001.png");
+        images.add(image4);
 
-            mAdapter.setImages(images);
-        } else if (type == 0) {
-            // set your own local image paths
-            ArrayList<SimpleImagePagerAdapter.Image> images = new ArrayList<>();
+        SimpleImagePagerAdapter.Image image5 = new SimpleImagePagerAdapter.Image();
+        image5.setImageUrl("http://7xpapo.com1.z0.glb.clouddn.com/2016011803.png");
+        images.add(image5);
 
-            SimpleImagePagerAdapter.Image image1 = new SimpleImagePagerAdapter.Image(this);
-            image1.setImagePath("/storage/emulated/0/Pictures/GIS/20151123_104716.jpg");
-            images.add(image1);
+        SimpleImagePagerAdapter.Image image6 = new SimpleImagePagerAdapter.Image();
+        image6.setImageUrl("http://7xpapo.com1.z0.glb.clouddn.com/2016011509.png");
+        images.add(image6);
 
-            SimpleImagePagerAdapter.Image image2 = new SimpleImagePagerAdapter.Image(this);
-            image2.setImagePath("/storage/emulated/0/Pictures/GIS/20151123_104729.jpg");
-            images.add(image2);
+        SimpleImagePagerAdapter.Image image7 = new SimpleImagePagerAdapter.Image();
+        image7.setImageUrl("http://7xpapo.com1.z0.glb.clouddn.com/2016010503.png");
+        images.add(image7);
 
-            SimpleImagePagerAdapter.Image image3 = new SimpleImagePagerAdapter.Image(this);
-            image3.setImagePath("/storage/emulated/0/Pictures/GIS/20151123_105347.jpg");
-            images.add(image3);
+        // set your own local image paths
+//        SimpleImagePagerAdapter.Image image8 = new SimpleImagePagerAdapter.Image();
+//        image8.setImagePath("/sdcard/DCIM/Camera/beku4Q9gGV2.jpg");
+//        images.add(image8);
+//
+//        SimpleImagePagerAdapter.Image image9 = new SimpleImagePagerAdapter.Image();
+//        image9.setImagePath("/sdcard/DCIM/Camera/IMG_20120907_194939.jpg");
+//        images.add(image9);
+//
+//        SimpleImagePagerAdapter.Image image10 = new SimpleImagePagerAdapter.Image();
+//        image10.setImagePath("/sdcard/DCIM/Camera/IMG_20120910_093748.jpg");
+//        images.add(image10);
 
-            SimpleImagePagerAdapter.Image image4 = new SimpleImagePagerAdapter.Image(this);
-            image4.setImagePath("/storage/emulated/0/Pictures/GIS/20151128_104537.jpg");
-            images.add(image4);
-
-            SimpleImagePagerAdapter.Image image5 = new SimpleImagePagerAdapter.Image(this);
-            image5.setImagePath("/storage/emulated/0/Pictures/GIS/20151209_153401.jpg");
-            images.add(image5);
-
-            SimpleImagePagerAdapter.Image image6 = new SimpleImagePagerAdapter.Image(this);
-            image6.setImagePath("/storage/emulated/0/Pictures/GIS/20151223_103259.jpg");
-            images.add(image6);
-
-            SimpleImagePagerAdapter.Image image7 = new SimpleImagePagerAdapter.Image(this);
-            image7.setImagePath("/storage/emulated/0/Pictures/GIS/20151211_105652.jpg");
-            images.add(image7);
-
-            mAdapter.setImages(images);
-        }
-
-        adapterType++;
+        mAdapter.setImages(images);
 
         mImagePager.setAdapter(mAdapter);
     }
