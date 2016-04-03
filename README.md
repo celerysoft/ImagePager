@@ -10,7 +10,7 @@ Image Pager is an Android widget, Implementation of ViewPager for Android that s
 
  * Load image from Resource, External Storage or the Internet
 
- * with memory cache and disk cache supported
+ * With memory cache and disk cache supported
 
 ## Technical Information
 
@@ -26,7 +26,7 @@ Image Pager is an Android widget, Implementation of ViewPager for Android that s
 
 ```
 dependencies {
-        compile 'com.celerysoft:imagepager:2.0.0'
+        compile 'com.celerysoft:imagepager:2.0.1'
 }
 ```
 

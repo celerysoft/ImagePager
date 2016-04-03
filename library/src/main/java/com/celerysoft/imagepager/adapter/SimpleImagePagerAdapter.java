@@ -73,12 +73,16 @@ public class SimpleImagePagerAdapter extends ImagePagerAdapter {
                 succeeded = false;
                 Log.w(TAG, "remove image failed, no collection to handle removing operation.");
             }
-            notifyDataSetChanged();
         } catch (Exception e) {
             Log.w(TAG, "remove image failed, image position: " + imagePosition
                     + ", image count: " + getCount());
             Log.w(TAG, "detail: " + e.getMessage());
             succeeded = false;
+        } finally {
+            if (succeeded) {
+                mIsRemovedImage = true;
+                notifyDataSetChanged();
+            }
         }
 
         return succeeded;

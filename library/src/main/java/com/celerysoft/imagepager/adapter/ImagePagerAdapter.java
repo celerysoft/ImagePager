@@ -2,6 +2,7 @@ package com.celerysoft.imagepager.adapter;
 
 import android.os.Parcelable;
 import android.support.v4.view.PagerAdapter;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -21,13 +22,14 @@ import uk.co.senab.photoview.PhotoViewAttacher;
 public abstract class ImagePagerAdapter extends PagerAdapter {
 
     @SuppressWarnings("unused")
-    private final String TAG = this.getClass().getSimpleName();
+    private final String TAG = "ImagePagerAdapter";
     @SuppressWarnings("unused")
     private final boolean DEBUG = BuildConfig.DEBUG;
 
+    protected boolean mIsRemovedImage = false;
     private ArrayList<PhotoView> mImageViews = new ArrayList<>();
     private PhotoView mCurrentPrimaryItem = null;
-    private int mImageViewCount;
+
     /**
      * {@link Indicator} of {@link ImagePager}, when a {@link ImagePager} call {@link ImagePager#setAdapter},
      * mIndicator is assigned as the {@link Indicator} of the {@link ImagePager}.
@@ -84,7 +86,6 @@ public abstract class ImagePagerAdapter extends PagerAdapter {
         }
         imageView.setVisibility(View.VISIBLE);
         mImageViews.set(position, imageView);
-
         if (mOnPageClickListener != null) {
             imageView.setOnViewTapListener(new PhotoViewAttacher.OnViewTapListener() {
                 @Override
@@ -121,8 +122,10 @@ public abstract class ImagePagerAdapter extends PagerAdapter {
 
     @Override
     public void setPrimaryItem(ViewGroup container, int position, Object object) {
-        PhotoView imageView = (PhotoView) object;
-
+        super.setPrimaryItem(container, position, object);
+//        PhotoView imageView = (PhotoView) object;
+//        imageView.
+//
 //        if (imageView != mCurrentPrimaryItem) {
 //            if (mCurrentPrimaryItem != null) {
 //                mCurrentPrimaryItem.setVisibility(View.INVISIBLE);
@@ -132,8 +135,8 @@ public abstract class ImagePagerAdapter extends PagerAdapter {
 //                imageView.setVisibility(View.VISIBLE);
 //            }
 //        }
-
-        mCurrentPrimaryItem = imageView;
+//
+//        mCurrentPrimaryItem = imageView;
     }
 
 
@@ -141,11 +144,11 @@ public abstract class ImagePagerAdapter extends PagerAdapter {
     @Override
     public int getItemPosition(Object object) {
         PhotoView imageView = (PhotoView) object;
-        int positon = mImageViews.indexOf(imageView);
-        if (positon == -1) {
+        int position = mImageViews.indexOf(imageView);
+        if (position == -1) {
             return POSITION_NONE;
         } else {
-            return positon;
+            return position;
         }
     }
 
@@ -163,17 +166,14 @@ public abstract class ImagePagerAdapter extends PagerAdapter {
 
     @Override
     public void notifyDataSetChanged() {
-        if (isDeleteAction()) {
+        if (mIsRemovedImage) {
             mIndicator.onPageDeleted();
         }
+        mIsRemovedImage = false;
 
         mImageViews = new ArrayList<>();
 
         super.notifyDataSetChanged();
-    }
-
-    private boolean isDeleteAction() {
-        return mImageViews.size() - getCount() == 1;
     }
 
 }
