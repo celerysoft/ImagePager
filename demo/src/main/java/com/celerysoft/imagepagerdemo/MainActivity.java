@@ -1,9 +1,13 @@
 package com.celerysoft.imagepagerdemo;
 
-import android.app.Activity;
 import android.os.Bundle;
+import android.support.design.widget.AppBarLayout;
+import android.support.v7.app.ActionBar;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
 
 import com.celerysoft.imagepager.ImagePager;
 import com.celerysoft.imagepager.adapter.SimpleImagePagerAdapter;
@@ -15,14 +19,12 @@ import java.util.ArrayList;
 /**
  * ImagePager usage demo.
  */
-public class MainActivity extends Activity {
+public class MainActivity extends AppCompatActivity {
     private ImagePager mImagePager;
     private SimpleImagePagerAdapter mAdapter;
 
-    private View mActionBar;
-    private Button mBtnBack;
-    private Button mBtnDelete;
-    private Button mBtnReset;
+    private AppBarLayout mAppBarLayout;
+    private Toolbar mToolbar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,47 +32,76 @@ public class MainActivity extends Activity {
 
         setContentView(R.layout.activity_main);
 
-        mActionBar = findViewById(R.id.main_action_bar);
-        mBtnBack = (Button) findViewById(R.id.main_btn_back);
-        mBtnDelete = (Button) findViewById(R.id.main_btn_delete);
-        mBtnReset = (Button) findViewById(R.id.main_btn_reset);
-        mImagePager = (ImagePager) findViewById(R.id.main_image_pager);
+        initActivity();
+    }
 
+    private void initActivity() {
+        bindView();
+        bindListener();
+        initData();
+        initView();
+    }
+
+    private void bindView() {
+        mAppBarLayout = (AppBarLayout) findViewById(R.id.app_bar_layout);
+        mToolbar = (Toolbar) findViewById(R.id.toolbar);
+        mImagePager = (ImagePager) findViewById(R.id.main_image_pager);
+    }
+
+    private void bindListener() {
         mImagePager.setOnPageClickListener(new ImagePager.OnPageClickListener() {
             @Override
             public void onPageClick() {
                 toggleActionBarVisibility();
             }
         });
-        mImagePager.setPageTransformer(true, new DepthPageTransformer());
+    }
 
-        mBtnBack.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                onBackPressed();
-            }
-        });
-        mBtnDelete.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                deleteCurrentImage();
-            }
-        });
-        mBtnReset.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                resetAdapter();
-            }
-        });
-
+    private void initData() {
         resetAdapter();
     }
 
+    private void initView() {
+        mImagePager.setPageTransformer(true, new DepthPageTransformer());
+
+        setSupportActionBar(mToolbar);
+        ActionBar actionBar = getSupportActionBar();
+        if (actionBar != null) {
+            actionBar.setDisplayHomeAsUpEnabled(true);
+            actionBar.setTitle("ImagePager Demo");
+        }
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_main_activity, menu);
+
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+
+        switch (id) {
+            case R.id.action_delete:
+                deleteCurrentImage();
+                return true;
+            case R.id.action_restore:
+                resetAdapter();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+
+
+    }
+
     private void toggleActionBarVisibility() {
-        if (mActionBar.getVisibility() == View.INVISIBLE) {
-            mActionBar.setVisibility(View.VISIBLE);
+        if (mAppBarLayout.getVisibility() == View.GONE) {
+            mAppBarLayout.setVisibility(View.VISIBLE);
         } else {
-            mActionBar.setVisibility(View.INVISIBLE);
+            mAppBarLayout.setVisibility(View.GONE);
         }
     }
 
