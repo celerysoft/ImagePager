@@ -1,6 +1,7 @@
 package com.celerysoft.imagepager;
 
 import android.content.Context;
+import android.os.Build;
 import android.support.v4.view.ViewPager;
 import android.util.AttributeSet;
 import android.util.Log;
@@ -88,9 +89,9 @@ public class ImagePager extends ViewGroup {
     private void initImagePager() {
         mContext = getContext();
 
-        try {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             setBackgroundColor(getResources().getColor(R.color.image_pager_background, null));
-        } catch (NoSuchMethodError e) {
+        } else {
             setBackgroundColor(getResources().getColor(R.color.image_pager_background));
         }
 
@@ -191,7 +192,7 @@ public class ImagePager extends ViewGroup {
                 top = getMeasuredHeight() - (int) (childView.getMeasuredHeight() * 2.5);
                 bottom = top + childView.getMeasuredHeight();
             } else if (childView instanceof Pager) {
-                // do nothing
+                // no op
             } else {
                 Log.e(TAG, "wtfffff!");
                 childView.layout(l, t, r, b);
@@ -200,6 +201,15 @@ public class ImagePager extends ViewGroup {
 
             childView.layout(left, top, right, bottom);
         }
+    }
+
+    public void setIndicator(Indicator indicator) {
+        if (mIndicator != null) {
+            removeView((View) mIndicator);
+        }
+
+        mIndicator = indicator;
+        addView((View) mIndicator, new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT));
     }
 
     public int getCurrentImagePosition() {

@@ -112,7 +112,7 @@ artifactory {
             repoKey = 'oss-snapshot-local' //The Artifactory repository key to publish to
             username = bintray.user
             password = bintray.key
-            maven = true
+            //maven = true
         }
         defaults {
             publications('mavenJava')
