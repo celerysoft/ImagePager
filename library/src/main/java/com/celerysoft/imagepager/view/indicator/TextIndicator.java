@@ -7,7 +7,6 @@ import android.view.Gravity;
 import android.widget.TextView;
 
 import com.celerysoft.imagepager.R;
-import com.celerysoft.imagepager.util.DensityUtil;
 
 import java.util.Locale;
 
@@ -15,7 +14,7 @@ import java.util.Locale;
  * Indicator that only display text.
  */
 public class TextIndicator extends TextView implements Indicator {
-    private final String TAG = TextIndicator.class.getSimpleName();
+    private static final String TAG = "TextIndicator";
 
     private Context mContext;
 
@@ -33,7 +32,7 @@ public class TextIndicator extends TextView implements Indicator {
 //        setTextSize(DensityUtil.sp2px(context, mTextSize));
         setTextSize(mTextSize);
 
-        setBackgroundResource(R.drawable.textindicator_background);
+        setBackgroundResource(R.drawable.indicator_background);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             setTextColor(context.getResources().getColor(R.color.text_indicator_text_color, null));
         } else {

@@ -12,7 +12,8 @@ import android.view.View;
 import com.celerysoft.imagepager.ImagePager;
 import com.celerysoft.imagepager.adapter.SimpleImagePagerAdapter;
 import com.celerysoft.imagepager.animation.DepthPageTransformer;
-import com.celerysoft.imagepager.animation.ZoomOutPageTransformer;
+import com.celerysoft.imagepager.view.indicator.DotIndicator;
+import com.celerysoft.imagepager.view.indicator.TextIndicator;
 
 import java.util.ArrayList;
 
@@ -90,6 +91,12 @@ public class MainActivity extends AppCompatActivity {
             case R.id.action_restore:
                 resetAdapter();
                 return true;
+            case R.id.action_dot_indicator:
+                setDotIndicator();
+                return true;
+            case R.id.action_text_indicator:
+                setTextIndicator();
+                return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
@@ -158,9 +165,23 @@ public class MainActivity extends AppCompatActivity {
         mAdapter.setImages(images);
 
         mImagePager.setAdapter(mAdapter);
+
+        setDotIndicator();
     }
 
     private void deleteCurrentImage() {
         mAdapter.removeImage(mImagePager.getCurrentImagePosition());
+    }
+
+    private void setTextIndicator() {
+        TextIndicator indicator = new TextIndicator(this);
+        mImagePager.setIndicator(indicator);
+    }
+
+    private void setDotIndicator() {
+        DotIndicator indicator = new DotIndicator(this);
+        indicator.setSelectedImageResource(R.drawable.ic_selected);
+        indicator.setUnselectedImageResource(R.drawable.ic_unselected);
+        mImagePager.setIndicator(indicator);
     }
 }

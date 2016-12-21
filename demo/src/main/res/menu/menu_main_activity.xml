@@ -2,16 +2,27 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
       xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
-        android:id="@+id/action_delete"
-        android:orderInCategory="100"
-        android:title="delete"
-        android:icon="@drawable/ic_delete_white_24dp"
-        app:showAsAction="ifRoom"/>
-
-    <item
         android:id="@+id/action_restore"
         android:orderInCategory="99"
         android:title="restore"
         android:icon="@drawable/ic_restore_white_24dp"
         app:showAsAction="ifRoom"/>
+
+    <item
+        android:id="@+id/action_delete"
+        android:orderInCategory="100"
+        android:title="delete"
+        android:icon="@drawable/ic_delete_white_24dp"
+        app:showAsAction="ifRoom"/>
+    <item
+        android:id="@+id/action_dot_indicator"
+        android:orderInCategory="998"
+        android:title="Dot Indicator"
+        app:showAsAction="never"/>
+
+    <item
+        android:id="@+id/action_text_indicator"
+        android:orderInCategory="999"
+        android:title="Text Indicator"
+        app:showAsAction="never"/>
 </menu>

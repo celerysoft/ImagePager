@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.celerysoft.imagepager.adapter.ImagePagerAdapter;
+import com.celerysoft.imagepager.util.DensityUtil;
 import com.celerysoft.imagepager.view.Pager;
 import com.celerysoft.imagepager.view.indicator.Indicator;
 import com.celerysoft.imagepager.view.indicator.TextIndicator;
@@ -19,11 +20,10 @@ import com.celerysoft.imagepager.view.indicator.TextIndicator;
  */
 public class ImagePager extends ViewGroup {
     // const
-    private final String TAG = this.getClass().getSimpleName();
-    private final int CHILD_COUNT = 2;
+    private static final String TAG = "ImagePager";
+    private static int CHILD_COUNT = 1;
 
     // field
-    private Context mContext;
     private Pager mPager;
     private Indicator mIndicator;
 
@@ -42,8 +42,12 @@ public class ImagePager extends ViewGroup {
             imagePagerAdapter.setOnImageClickListener(mOnImageClickListener);
         }
         mPager.setAdapter(adapter);
-        mIndicator.onPageAdapterChanged(adapter.getCount());
-        mAdapter.setIndicator(mIndicator);
+
+        // TODO
+        if (mIndicator != null) {
+            mIndicator.onPageAdapterChanged(adapter.getCount());
+            mAdapter.setIndicator(mIndicator);
+        }
     }
 
     private OnImageChangeListener mOnImageChangeListener;
@@ -87,19 +91,14 @@ public class ImagePager extends ViewGroup {
     }
 
     private void initImagePager() {
-        mContext = getContext();
-
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             setBackgroundColor(getResources().getColor(R.color.image_pager_background, null));
         } else {
             setBackgroundColor(getResources().getColor(R.color.image_pager_background));
         }
 
-        mPager = new Pager(mContext);
+        mPager = new Pager(getContext());
         addView(mPager, new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT));
-        mIndicator = new TextIndicator(mContext);
-        addView((View) mIndicator, new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT));
-
 
         mPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
@@ -114,7 +113,10 @@ public class ImagePager extends ViewGroup {
                 if (mOnImageChangeListener != null) {
                     mOnImageChangeListener.onPageSelected(position);
                 }
-                mIndicator.onPageSelected(position);
+
+                if (mIndicator != null) {
+                    mIndicator.onPageSelected(position);
+                }
             }
 
             @Override
@@ -145,12 +147,11 @@ public class ImagePager extends ViewGroup {
 
         int childCount = getChildCount();
         if (childCount != CHILD_COUNT) {
-            Log.e(TAG, "wtf, child count must be 3!");
+            Log.e(TAG, "wtf, child count must be " + CHILD_COUNT + "!");
         }
 
         int childWidth = 0;
         int childHeight = 0;
-        //MarginLayoutParams params = null;
 
         for (int i = 0; i < childCount; ++i) {
             View childView = getChildAt(0);
@@ -173,6 +174,7 @@ public class ImagePager extends ViewGroup {
     @Override
     protected void onLayout(boolean changed, int l, int t, int r, int b) {
         int childCount = getChildCount();
+        Log.i(TAG, "Child count = " + childCount);
         if (childCount != CHILD_COUNT) {
             Log.e(TAG, "wtf, child count must be " + CHILD_COUNT + "!");
         }
@@ -189,8 +191,10 @@ public class ImagePager extends ViewGroup {
                 int horizontalMargin = (getMeasuredWidth() - childView.getMeasuredWidth()) / 2;
                 left += horizontalMargin;
                 right -= horizontalMargin;
-                top = getMeasuredHeight() - (int) (childView.getMeasuredHeight() * 2.5);
-                bottom = top + childView.getMeasuredHeight();
+//                top = getMeasuredHeight() - (int) (childView.getMeasuredHeight() * 2.5);
+//                bottom = top + childView.getMeasuredHeight();
+                bottom = getMeasuredHeight() - DensityUtil.dp2px(getContext(), 16);
+                top = bottom - childView.getMeasuredHeight();
             } else if (childView instanceof Pager) {
                 // no op
             } else {
@@ -208,7 +212,13 @@ public class ImagePager extends ViewGroup {
             removeView((View) mIndicator);
         }
 
+        CHILD_COUNT = 2;
         mIndicator = indicator;
+        if (mAdapter != null) {
+            mIndicator.onPageAdapterChanged(mAdapter.getCount());
+            mIndicator.onPageSelected(getCurrentImagePosition());
+            mAdapter.setIndicator(mIndicator);
+        }
         addView((View) mIndicator, new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT));
     }
 

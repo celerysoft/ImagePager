@@ -35,6 +35,10 @@ public abstract class ImagePagerAdapter extends PagerAdapter {
      * mIndicator is assigned as the {@link Indicator} of the {@link ImagePager}.
      **/
     private Indicator mIndicator;
+
+    /**
+     * don't call this method, use {@link ImagePager#setIndicator(Indicator)} to instead of.
+     */
     public void setIndicator(Indicator indicator) {
         mIndicator = indicator;
     }
@@ -167,7 +171,9 @@ public abstract class ImagePagerAdapter extends PagerAdapter {
     @Override
     public void notifyDataSetChanged() {
         if (mIsRemovedImage) {
-            mIndicator.onPageDeleted();
+            if (mIndicator != null) {
+                mIndicator.onPageDeleted();
+            }
         }
         mIsRemovedImage = false;
 
