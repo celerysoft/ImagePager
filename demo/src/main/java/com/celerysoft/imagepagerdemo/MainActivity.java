@@ -91,11 +91,37 @@ public class MainActivity extends AppCompatActivity {
             case R.id.action_restore:
                 resetAdapter();
                 return true;
+
             case R.id.action_dot_indicator:
                 setDotIndicator();
                 return true;
             case R.id.action_text_indicator:
                 setTextIndicator();
+                return true;
+
+            case R.id.action_indicator_position_left:
+                setIndicatorPosition(ImagePager.LEFT);
+                return true;
+            case R.id.action_indicator_position_top:
+                setIndicatorPosition(ImagePager.TOP);
+                return true;
+            case R.id.action_indicator_position_right:
+                setIndicatorPosition(ImagePager.RIGHT);
+                return true;
+            case R.id.action_indicator_position_bottom:
+                setIndicatorPosition(ImagePager.BOTTOM);
+                return true;
+            case R.id.action_indicator_position_top_left:
+                setIndicatorPosition(ImagePager.TOP_LEFT);
+                return true;
+            case R.id.action_indicator_position_top_right:
+                setIndicatorPosition(ImagePager.TOP_RIGHT);
+                return true;
+            case R.id.action_indicator_position_bottom_left:
+                setIndicatorPosition(ImagePager.BOTTOM_LEFT);
+                return true;
+            case R.id.action_indicator_position_bottom_right:
+                setIndicatorPosition(ImagePager.BOTTOM_RIGHT);
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
@@ -167,6 +193,9 @@ public class MainActivity extends AppCompatActivity {
         mImagePager.setAdapter(mAdapter);
 
         setDotIndicator();
+
+        // set up the indicator margin
+        mImagePager.setIndicatorMargin(16);
     }
 
     private void deleteCurrentImage() {
@@ -183,5 +212,9 @@ public class MainActivity extends AppCompatActivity {
         indicator.setSelectedImageResource(R.drawable.ic_selected);
         indicator.setUnselectedImageResource(R.drawable.ic_unselected);
         mImagePager.setIndicator(indicator);
+    }
+
+    private void setIndicatorPosition(int position) {
+        mImagePager.setIndicatorPosition(position);
     }
 }

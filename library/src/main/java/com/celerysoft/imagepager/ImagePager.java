@@ -21,11 +21,22 @@ import com.celerysoft.imagepager.view.indicator.TextIndicator;
 public class ImagePager extends ViewGroup {
     // const
     private static final String TAG = "ImagePager";
+    public static final int LEFT = 0x0;
+    public static final int TOP = 0x1;
+    public static final int RIGHT = 0x2;
+    public static final int BOTTOM = 0x3;
+    public static final int TOP_LEFT = 0x4;
+    public static final int TOP_RIGHT = 0x5;
+    public static final int BOTTOM_LEFT = 0x6;
+    public static final int BOTTOM_RIGHT = 0x7;
+
     private static int CHILD_COUNT = 1;
 
     // field
     private Pager mPager;
     private Indicator mIndicator;
+    private int mIndicatorPosition = BOTTOM;
+    private float mIndicatorMargin = 16;
 
     // propertry
     private ImagePagerAdapter mAdapter;
@@ -174,7 +185,6 @@ public class ImagePager extends ViewGroup {
     @Override
     protected void onLayout(boolean changed, int l, int t, int r, int b) {
         int childCount = getChildCount();
-        Log.i(TAG, "Child count = " + childCount);
         if (childCount != CHILD_COUNT) {
             Log.e(TAG, "wtf, child count must be " + CHILD_COUNT + "!");
         }
@@ -188,23 +198,88 @@ public class ImagePager extends ViewGroup {
             int bottom = b;
 
             if (childView instanceof Indicator) {
-                int horizontalMargin = (getMeasuredWidth() - childView.getMeasuredWidth()) / 2;
-                left += horizontalMargin;
-                right -= horizontalMargin;
-//                top = getMeasuredHeight() - (int) (childView.getMeasuredHeight() * 2.5);
-//                bottom = top + childView.getMeasuredHeight();
-                bottom = getMeasuredHeight() - DensityUtil.dp2px(getContext(), 16);
-                top = bottom - childView.getMeasuredHeight();
+                int[] positions = deriveIndicatorPosition(l, t, r, b, childView);
+                left = positions[0];
+                top = positions[1];
+                right = positions[2];
+                bottom = positions[3];
             } else if (childView instanceof Pager) {
                 // no op
             } else {
                 Log.e(TAG, "wtfffff!");
-                childView.layout(l, t, r, b);
-                continue;
             }
 
             childView.layout(left, top, right, bottom);
         }
+    }
+
+    private int[] deriveIndicatorPosition(int left, int top, int right, int bottom, View indicatorView) {
+        int[] positions = new int[4];
+
+        int horizontalMargin;
+        int verticalMargin;
+        switch (mIndicatorPosition) {
+            case LEFT:
+                verticalMargin = (getMeasuredHeight() - indicatorView.getMeasuredHeight()) / 2;
+                left = DensityUtil.dp2px(getContext(), mIndicatorMargin);
+                right = left + indicatorView.getMeasuredWidth();
+                top += verticalMargin;
+                bottom -= verticalMargin;
+                break;
+            case TOP:
+                horizontalMargin = (getMeasuredWidth() - indicatorView.getMeasuredWidth()) / 2;
+                left += horizontalMargin;
+                right -= horizontalMargin;
+                top = DensityUtil.dp2px(getContext(), mIndicatorMargin);
+                bottom = top + indicatorView.getMeasuredHeight();
+                break;
+            case RIGHT:
+                verticalMargin = (getMeasuredHeight() - indicatorView.getMeasuredHeight()) / 2;
+                right = getMeasuredWidth() - DensityUtil.dp2px(getContext(), mIndicatorMargin);
+                left = right - indicatorView.getMeasuredWidth();
+                top += verticalMargin;
+                bottom -= verticalMargin;
+                break;
+            case TOP_LEFT:
+                left = DensityUtil.dp2px(getContext(), mIndicatorMargin);
+                right = left + indicatorView.getMeasuredWidth();
+                top = DensityUtil.dp2px(getContext(), mIndicatorMargin);
+                bottom = top + indicatorView.getMeasuredHeight();
+                break;
+            case TOP_RIGHT:
+                right = getMeasuredWidth() - DensityUtil.dp2px(getContext(), mIndicatorMargin);
+                left = right - indicatorView.getMeasuredWidth();
+                top = DensityUtil.dp2px(getContext(), mIndicatorMargin);
+                bottom = top + indicatorView.getMeasuredHeight();
+                break;
+            case BOTTOM_LEFT:
+                left = DensityUtil.dp2px(getContext(), mIndicatorMargin);
+                right = left + indicatorView.getMeasuredWidth();
+                bottom = getMeasuredHeight() - indicatorView.getMeasuredHeight();
+                top = bottom - indicatorView.getMeasuredHeight();
+                break;
+            case BOTTOM_RIGHT:
+                right = getMeasuredWidth() - DensityUtil.dp2px(getContext(), mIndicatorMargin);
+                left = right - indicatorView.getMeasuredWidth();
+                bottom = getMeasuredHeight() - indicatorView.getMeasuredHeight();
+                top = bottom - indicatorView.getMeasuredHeight();
+                break;
+            case BOTTOM:
+            default:
+                horizontalMargin = (getMeasuredWidth() - indicatorView.getMeasuredWidth()) / 2;
+                left += horizontalMargin;
+                right -= horizontalMargin;
+                bottom = getMeasuredHeight() - DensityUtil.dp2px(getContext(), mIndicatorMargin);
+                top = bottom - indicatorView.getMeasuredHeight();
+                break;
+        }
+
+        positions[0] = left;
+        positions[1] = top;
+        positions[2] = right;
+        positions[3] = bottom;
+
+        return positions;
     }
 
     public void setIndicator(Indicator indicator) {
@@ -220,6 +295,24 @@ public class ImagePager extends ViewGroup {
             mAdapter.setIndicator(mIndicator);
         }
         addView((View) mIndicator, new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT));
+    }
+
+    /**
+     * set up the margin of indicator, default is 16 dp.
+     * @param marginInDp margin in dp value.
+     */
+    public void setIndicatorMargin(float marginInDp) {
+        mIndicatorMargin = marginInDp;
+    }
+
+    /**
+     * set up the position of indicator
+     * @param position pick one from {@link #LEFT}, {@link #TOP}, {@link #RIGHT}, {@link #BOTTOM},
+     * {@link #TOP_LEFT}, {@link #TOP_RIGHT}, {@link #BOTTOM_LEFT}, {@link #BOTTOM_RIGHT}
+     */
+    public void setIndicatorPosition(int position) {
+        mIndicatorPosition = position;
+        requestLayout();
     }
 
     public int getCurrentImagePosition() {
