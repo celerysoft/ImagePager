@@ -145,6 +145,10 @@ public class MainActivity extends AppCompatActivity {
 
         mAdapter = new SimpleImagePagerAdapter(this);
 
+        // set a ScaleType for the ImageView in ImagePager
+//        mAdapter.setScaleType(ImageView.ScaleType.FIT_CENTER);
+        mAdapter.setScaleType(null);
+
         ArrayList<SimpleImagePagerAdapter.Image> images = new ArrayList<>();
 
         SimpleImagePagerAdapter.Image image1 = new SimpleImagePagerAdapter.Image();

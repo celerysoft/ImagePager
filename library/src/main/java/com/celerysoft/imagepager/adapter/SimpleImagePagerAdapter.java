@@ -1,12 +1,10 @@
 package com.celerysoft.imagepager.adapter;
 
 import android.content.Context;
-import android.graphics.Bitmap;
 import android.util.Log;
+import android.widget.ImageView;
 
-import com.celerysoft.imagepager.R;
 import com.celerysoft.imagepager.util.ImageLoader;
-import com.celerysoft.imagepager.util.ImageUtil;
 
 import java.util.ArrayList;
 
@@ -22,6 +20,21 @@ public class SimpleImagePagerAdapter extends ImagePagerAdapter {
     private Context mContext;
 
     private ImageLoader mImageLoader;
+
+    private ImageView.ScaleType mScaleType;
+
+    public ImageView.ScaleType getScaleType() {
+        return mScaleType;
+    }
+
+    /**
+     * <p> Set a ScaleType for the ImageView in ImagePager.
+     * <p> Please note that call this method before {@link com.celerysoft.imagepager.ImagePager#setAdapter(ImagePagerAdapter)}
+    * @param scaleType
+    */
+    public void setScaleType(ImageView.ScaleType scaleType) {
+        mScaleType = scaleType;
+    }
 
     private ArrayList<Image> mImages;
     public ArrayList<Image> getImages() {
@@ -43,12 +56,23 @@ public class SimpleImagePagerAdapter extends ImagePagerAdapter {
         mImageLoader = ImageLoader.build(context);
     }
 
+    public SimpleImagePagerAdapter(Context context, ImageView.ScaleType scaleType) {
+        this(context);
+
+        mScaleType = scaleType;
+    }
+
     @Override
     public PhotoView getItem(int position) {
         PhotoView photoView = null;
 
         if (mImages != null && mImages.size() > position) {
             photoView = new PhotoView(mContext);
+
+            if (mScaleType != null) {
+                photoView.setScaleType(mScaleType);
+            }
+
             mImageLoader.bindImageView(mImages.get(position).getUrl(), photoView);
         }
 

@@ -26,7 +26,7 @@ Image Pager is an Android widget, Implementation of ViewPager for Android that s
 
 ```
 dependencies {
-        compile 'com.celerysoft:imagepager:2.1.0'
+        compile 'com.celerysoft:imagepager:2.1.1'
 }
 ```
 
