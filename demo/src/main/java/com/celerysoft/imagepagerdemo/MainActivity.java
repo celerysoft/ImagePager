@@ -140,7 +140,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void resetAdapter() {
         // set the transformer for pages
-        mImagePager.setPageTransformer(true, new DepthPageTransformer());
+        //mImagePager.setPageTransformer(true, new DepthPageTransformer());
         //mImagePager.setPageTransformer(true, new ZoomOutPageTransformer());
 
         mAdapter = new SimpleImagePagerAdapter(this);

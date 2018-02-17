@@ -1,14 +1,14 @@
 apply plugin: 'com.android.library'
 
 android {
-    compileSdkVersion 25
-    buildToolsVersion "25.0.2"
+    compileSdkVersion 26
+    buildToolsVersion "26.0.3"
 
     defaultConfig {
         minSdkVersion 14
-        targetSdkVersion 25
-        versionCode 3
-        versionName "2.1.1"
+        targetSdkVersion 26
+        versionCode 1
+        versionName "2.0.1"
     }
     buildTypes {
         release {
@@ -23,4 +23,4 @@ dependencies {
     compile 'com.commit451:PhotoView:1.2.4'
 }
 
-apply from: 'bintray.gradle'
+apply from: 'publish.gradle'

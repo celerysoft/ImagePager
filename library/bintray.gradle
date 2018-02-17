@@ -3,7 +3,7 @@ version = PROJ_VERSION
 project.archivesBaseName = PROJ_ARTIFACTID
 
 apply plugin: 'com.jfrog.bintray'
-apply plugin: "com.jfrog.artifactory"
+//apply plugin: "com.jfrog.artifactory"
 apply plugin: 'maven-publish'
 
 task sourcesJar(type: Jar) {
@@ -77,9 +77,9 @@ publishing {
     }
 }
 
-afterEvaluate {
-    publishing.publications.mavenJava.artifact(bundleRelease)
-}
+//afterEvaluate {
+//    publishing.publications.mavenJava.artifact(bundleRelease)
+//}
 
 bintray {
     user = hasProperty("bintrayUser")?getProperty("bintrayUser"):getProperty("BINTRAY_USER")
@@ -112,7 +112,7 @@ artifactory {
             repoKey = 'oss-snapshot-local' //The Artifactory repository key to publish to
             username = bintray.user
             password = bintray.key
-            //maven = true
+            maven = true
         }
         defaults {
             publications('mavenJava')
