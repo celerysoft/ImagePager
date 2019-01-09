@@ -1,5 +1,7 @@
 # Image Pager
 
+[ ![Download](https://api.bintray.com/packages/celerysoft/maven/ImagePager/images/download.svg) ](https://bintray.com/celerysoft/maven/ImagePager/_latestVersion)
+
 ## What is it?
 
 Image Pager is an Android widget, Implementation of ViewPager for Android that supports sliding to change picture, zooming picture by various touch gestures.
@@ -26,7 +28,7 @@ Image Pager is an Android widget, Implementation of ViewPager for Android that s
 
 ```
 dependencies {
-        compile 'com.celerysoft:imagepager:2.1.1'
+        compile 'com.celerysoft:imagepager:2.2.0'
 }
 ```
 
