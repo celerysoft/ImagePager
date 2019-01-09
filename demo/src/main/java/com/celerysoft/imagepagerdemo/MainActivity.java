@@ -44,9 +44,9 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void bindView() {
-        mAppBarLayout = (AppBarLayout) findViewById(R.id.app_bar_layout);
-        mToolbar = (Toolbar) findViewById(R.id.toolbar);
-        mImagePager = (ImagePager) findViewById(R.id.main_image_pager);
+        mAppBarLayout = findViewById(R.id.app_bar_layout);
+        mToolbar = findViewById(R.id.toolbar);
+        mImagePager = findViewById(R.id.main_image_pager);
     }
 
     private void bindListener() {
@@ -71,6 +71,9 @@ public class MainActivity extends AppCompatActivity {
             actionBar.setDisplayHomeAsUpEnabled(true);
             actionBar.setTitle("ImagePager Demo");
         }
+
+        // modify default placeholder image
+        // mImagePager.setPlaceholder(R.drawable.placeholder);
     }
 
     @Override
@@ -164,19 +167,19 @@ public class MainActivity extends AppCompatActivity {
         images.add(image3);
 
         SimpleImagePagerAdapter.Image image4 = new SimpleImagePagerAdapter.Image();
-        image4.setImageUrl("http://7xpapo.com1.z0.glb.clouddn.com/blog/assets/postImages/2016102601.png");
+        image4.setImageUrl("http://githubstatic.celerysoft.com/blog/assets/postImages/2016102601.png");
         images.add(image4);
 
         SimpleImagePagerAdapter.Image image5 = new SimpleImagePagerAdapter.Image();
-        image5.setImageUrl("http://7xpapo.com1.z0.glb.clouddn.com/blog/assets/postImages/2016011509.png");
+        image5.setImageUrl("http://githubstatic.celerysoft.com/blog/assets/postImages/2016011509.png");
         images.add(image5);
 
         SimpleImagePagerAdapter.Image image6 = new SimpleImagePagerAdapter.Image();
-        image6.setImageUrl("http://7xpapo.com1.z0.glb.clouddn.com/blog/assets/postImages/2016010502.png");
+        image6.setImageUrl("http://githubstatic.celerysoft.com/blog/assets/postImages/2016010502.png");
         images.add(image6);
 
         SimpleImagePagerAdapter.Image image7 = new SimpleImagePagerAdapter.Image();
-        image7.setImageUrl("http://7xpapo.com1.z0.glb.clouddn.com/blog/assets/postImages/2016010401.png");
+        image7.setImageUrl("http://githubstatic.celerysoft.com/blog/assets/postImages/2016010401.png");
         images.add(image7);
 
         // set your own local image paths

@@ -10,6 +10,8 @@ import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
 import android.os.StatFs;
+import android.support.annotation.DrawableRes;
+import android.support.annotation.IntegerRes;
 import android.support.annotation.NonNull;
 import android.util.Log;
 import android.util.LruCache;
@@ -136,6 +138,15 @@ public class ImageLoader {
         THREAD_POOL_EXECUTOR.execute(loadBitmapTask);
     }
 
+    private int mPlaceholderResInt = R.drawable.placeholder;
+    public void setPlaceholder(@DrawableRes int placeholderResInt) {
+        mPlaceholderResInt = placeholderResInt;
+    }
+
+    public void resetPlaceholder() {
+        mPlaceholderResInt = R.drawable.placeholder;
+    }
+
     private final int MESSAGE_START = 0;
     private final int MESSAGE_LOADED = 1;
     private Handler mUiThreadHandler = new Handler(Looper.getMainLooper()) {
@@ -145,7 +156,7 @@ public class ImageLoader {
             ImageView imageView = result.imageView;
             switch (msg.what) {
                 case MESSAGE_START:
-                    imageView.setImageResource(R.mipmap.loading);
+                    imageView.setImageResource(mPlaceholderResInt);
                     break;
                 case MESSAGE_LOADED:
                     imageView.setImageBitmap(result.bitmap);

@@ -1,6 +1,7 @@
 package com.celerysoft.imagepager.adapter;
 
 import android.os.Parcelable;
+import android.support.annotation.DrawableRes;
 import android.support.v4.view.PagerAdapter;
 import android.util.Log;
 import android.view.View;
@@ -104,6 +105,11 @@ public abstract class ImagePagerAdapter extends PagerAdapter {
                 public void onPhotoTap(View view, float x, float y) {
                     mOnPhotoTapListener.onImageClick();
                 }
+
+                @Override
+                public void onOutsidePhotoTap() {
+
+                }
             });
         }
 
@@ -181,5 +187,9 @@ public abstract class ImagePagerAdapter extends PagerAdapter {
 
         super.notifyDataSetChanged();
     }
+
+    public abstract void setPlaceholder(@DrawableRes int placeholderResInt);
+
+    public abstract void resetPlaceholder();
 
 }

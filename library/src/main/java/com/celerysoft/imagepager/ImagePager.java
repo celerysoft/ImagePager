@@ -2,6 +2,7 @@ package com.celerysoft.imagepager;
 
 import android.content.Context;
 import android.os.Build;
+import android.support.annotation.DrawableRes;
 import android.support.v4.view.ViewPager;
 import android.util.AttributeSet;
 import android.util.Log;
@@ -329,6 +330,14 @@ public class ImagePager extends ViewGroup {
 
     public void setOffscreenPageLimit(int limit) {
         mPager.setOffscreenPageLimit(limit);
+    }
+
+    public void setPlaceholder(@DrawableRes int placeholderResInt) {
+        mAdapter.setPlaceholder(placeholderResInt);
+    }
+
+    public void resetPlaceholder() {
+        mAdapter.resetPlaceholder();
     }
 
     public interface OnImageChangeListener {

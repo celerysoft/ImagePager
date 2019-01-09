@@ -1,6 +1,7 @@
 package com.celerysoft.imagepager.adapter;
 
 import android.content.Context;
+import android.support.annotation.DrawableRes;
 import android.util.Log;
 import android.widget.ImageView;
 
@@ -110,6 +111,16 @@ public class SimpleImagePagerAdapter extends ImagePagerAdapter {
         }
 
         return succeeded;
+    }
+
+    @Override
+    public void setPlaceholder(@DrawableRes int placeholderResInt) {
+        mImageLoader.setPlaceholder(placeholderResInt);
+    }
+
+    @Override
+    public void resetPlaceholder() {
+        mImageLoader.resetPlaceholder();
     }
 
     public static class Image {
